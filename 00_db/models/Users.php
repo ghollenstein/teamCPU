@@ -1,7 +1,7 @@
 <?php
-class Users {
-private $conn;
-private $table_name = "users";
+class Users extends BaseModel  {
+protected $conn;
+protected $table_name = "users";
 
 public $user_id;
 public $username;
@@ -14,7 +14,7 @@ public $modUser;
 public $lockstate;
 
 public function __construct($conn) {
-    $this->conn = $conn;
+    parent::__construct($conn, $this->table_name);
 }
 
 private function validate() {

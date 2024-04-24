@@ -1,7 +1,7 @@
 <?php
-class Cart_items {
-private $conn;
-private $table_name = "cart_items";
+class Cart_items extends BaseModel  {
+protected $conn;
+protected $table_name = "cart_items";
 
 public $cart_id;
 public $product_id;
@@ -13,7 +13,7 @@ public $modUser;
 public $lockstate;
 
 public function __construct($conn) {
-    $this->conn = $conn;
+    parent::__construct($conn, $this->table_name);
 }
 
 private function validate() {

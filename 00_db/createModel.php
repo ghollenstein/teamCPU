@@ -25,8 +25,8 @@ foreach ($tables as $table) {
     $nonAutoIncrementFields = [];
     $requiredFields = [];
 
-    $classContent = "<?php\nclass " . ucfirst($table) . " {\n";
-    $classContent .= "private \$conn;\nprivate \$table_name = \"$table\";\n\n";
+    $classContent = "<?php\nclass " . ucfirst($table) . " extends BaseModel  {\n";
+    $classContent .= "protected \$conn;\nprotected \$table_name = \"$table\";\n\n";
 
     foreach ($columns as $column) {
         $classContent .= "public \${$column['Field']};\n";
@@ -41,7 +41,7 @@ foreach ($tables as $table) {
         }
     }
 
-    $classContent .= "\npublic function __construct(\$conn) {\n    \$this->conn = \$conn;\n}\n\n";
+    $classContent .= "\npublic function __construct(\$conn) {\n    parent::__construct(\$conn, \$this->table_name);\n}\n\n";
 
     // Validation method
     $classContent .= "private function validate() {\n";

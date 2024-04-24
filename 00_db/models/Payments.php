@@ -1,7 +1,7 @@
 <?php
-class Payments {
-private $conn;
-private $table_name = "payments";
+class Payments extends BaseModel  {
+protected $conn;
+protected $table_name = "payments";
 
 public $payment_id;
 public $order_id;
@@ -15,7 +15,7 @@ public $modUser;
 public $lockstate;
 
 public function __construct($conn) {
-    $this->conn = $conn;
+    parent::__construct($conn, $this->table_name);
 }
 
 private function validate() {

@@ -1,6 +1,4 @@
 <?php
-require_once 'Database.php';
-
 class Controller
 {
     private $params = [];
@@ -22,7 +20,7 @@ class Controller
         $this->params = [
             'POST' => filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS),
             'GET' => filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS),
-            'Method' => filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING),
+            'Method' => filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW),
             'URI' => filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL)
         ];
     }
@@ -58,5 +56,3 @@ class Controller
         }
     }
 }
-
-

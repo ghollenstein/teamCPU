@@ -1,5 +1,6 @@
 <?php
-include 'class/Controller.php';
+include_once 'class/autoload.php';
+
 $controller = new Controller();
 ?>
 <!DOCTYPE html>
