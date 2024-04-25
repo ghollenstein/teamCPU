@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Grüner Tee",
+    "preis": 4.99,
+    "beschreibung": "Erfrischender und belebender grüner Tee.",
+    "link": "https://www.google.com/search?q=gruener-tee",
+    "bild": "assets/gruener-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Schwarzer Tee",
+    "preis": 5.99,
+    "beschreibung": "Kräftiger und aromatischer schwarzer Tee.",
+    "link": "https://www.google.com/search?q=schwarzer-tee",
+    "bild": "assets/schwarzer-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  { 
+    "name": "Weißer Tee",
+    "preis": 6.5,
+    "beschreibung": "Milder und fein aromatischer weißer Tee.",
+    "link": "https://www.google.com/search?q=weisser-tee",
+    "bild": "assets/weisser-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Oolong Tee",
+    "preis": 7.0,
+    "beschreibung": "Traditioneller, halbfermentierter Tee mit einem einzigartigen Geschmack.",
+    "link": "https://www.google.com/search?q=oolong-tee",
+    "bild": "assets/oolong-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Pfefferminztee",
+    "preis": 3.99,
+    "beschreibung": "Erfrischender Tee mit dem kühlenden Geschmack von Pfefferminze.",
+    "link": "https://www.google.com/search?q=pfefferminztee",
+    "bild": "assets/pfefferminztee.jpeg",
+    "mehrwertsteuer": 7
+  },
+  {
+    "name": "Kamillentee",
+    "preis": 3.5,
+    "beschreibung": "Beruhigender und entspannender Tee mit Kamillenblüten.",
+    "link": "https://www.google.com/search?q=kamillentee",
+    "bild": "assets/kamillentee.jpeg",
+    "mehrwertsteuer": 7
+  },
+  {
+    "name": "Früchtetee",
+    "preis": 4.25,
+    "beschreibung": "Süßer Tee aus einer Mischung verschiedener Früchte.",
+    "link": "https://www.google.com/search?q=fruechtetee",
+    "bild": "assets/fruechtetee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Chai Tee",
+    "preis": 5.75,
+    "beschreibung": "Würziger Tee mit einer Mischung aus Schwarztee und verschiedenen Gewürzen.",
+    "link": "https://www.google.com/search?q=chai-tee",
+    "bild": "assets/chai-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Mate Tee",
+    "preis": 4.95,
+    "beschreibung": "Belebender Tee aus den Blättern des Mate-Strauchs.",
+    "link": "https://www.google.com/search?q=mate-tee",
+    "bild": "assets/mate-tee.jpeg",
+    "mehrwertsteuer": 20
+  },
+  {
+    "name": "Earl Grey",
+    "preis": 5.5,
+    "beschreibung": "Berühmter Schwarztee aromatisiert mit Bergamotte-Öl.",
+    "link": "https://www.google.com/search?q=earl-grey",
+    "bild": "assets/earl-grey.jpeg",
+    "mehrwertsteuer": 20
+  }
+]

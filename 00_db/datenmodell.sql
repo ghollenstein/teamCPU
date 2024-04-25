@@ -209,7 +209,7 @@ VALUES
         20,
         4.99,
         100,
-        '/assets/gruener-tee.jpeg'
+        'assets/gruener-tee.jpeg'
     ),
     (
         'Schwarzer Tee',
@@ -217,7 +217,7 @@ VALUES
         20,
         5.99,
         100,
-        '/assets/schwarzer-tee.jpeg'
+        'assets/schwarzer-tee.jpeg'
     ),
     (
         'Weißer Tee',
@@ -225,7 +225,7 @@ VALUES
         20,
         6.50,
         100,
-        '/assets/weisser-tee.jpeg'
+        'assets/weisser-tee.jpeg'
     ),
     (
         'Oolong Tee',
@@ -233,7 +233,7 @@ VALUES
         20,
         7.00,
         100,
-        '/assets/oolong-tee.jpeg'
+        'assets/oolong-tee.jpeg'
     ),
     (
         'Pfefferminztee',
@@ -241,7 +241,7 @@ VALUES
         7,
         3.99,
         100,
-        '/assets/pfefferminztee.jpeg'
+        'assets/pfefferminztee.jpeg'
     ),
     (
         'Kamillentee',
@@ -249,7 +249,7 @@ VALUES
         7,
         3.50,
         100,
-        '/assets/kamillentee.jpeg'
+        'assets/kamillentee.jpeg'
     ),
     (
         'Früchtetee',
@@ -257,7 +257,7 @@ VALUES
         20,
         4.25,
         100,
-        '/assets/fruechtetee.jpeg'
+        'assets/fruechtetee.jpeg'
     ),
     (
         'Chai Tee',
@@ -265,7 +265,7 @@ VALUES
         20,
         5.75,
         100,
-        '/assets/chai-tee.jpeg'
+        'assets/chai-tee.jpeg'
     ),
     (
         'Mate Tee',
@@ -273,7 +273,7 @@ VALUES
         20,
         4.95,
         100,
-        '/assets/mate-tee.jpeg'
+        'assets/mate-tee.jpeg'
     ),
     (
         'Earl Grey',
@@ -281,7 +281,7 @@ VALUES
         20,
         5.50,
         100,
-        '/assets/earl-grey.jpeg'
+        'assets/earl-grey.jpeg'
     );
 
 INSERT INTO

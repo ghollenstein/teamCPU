@@ -16,7 +16,7 @@ class TeaShopController
             throw new Exception("No model found for entity: " . $entity);
         }
 
-        $model = new $className($this->dbConnection);
+        $model = new $className($this->dbConnection, $data);
         if (!method_exists($model, $action)) {
             throw new Exception("Action not recognized for entity: " . $entity);
         }

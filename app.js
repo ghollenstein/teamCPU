@@ -7,8 +7,25 @@ const CART_KEY = 'warenkorb';
 // Asynchrones Laden der Teesorten
 async function loadTeas() {
     try {
-        const response = await fetch('teas.json');
-        teas = await response.json();
+        const requestOptions = {
+            method: 'POST', // Using POST method
+            headers: {
+                'Content-Type': 'application/json' // Specify the content type as JSON
+            },
+            body: JSON.stringify({
+                entity: 'ShopProducts', // Entity to query
+                action: 'getProducts'   // Action to perform
+            })
+        };
+        const response = await fetch('api/', requestOptions);
+        let resJson = await response.json();
+
+        if (resJson.success === true) {
+            teas = resJson.data;
+        } else {
+            throw new Error(resJson.error);
+        }
+
     } catch (error) {
         console.error('Fehler beim Laden der Teesorten:', error);
         alert('Fehler beim Laden der Teesorten!')
@@ -33,7 +50,7 @@ function displayTeas() {
 
     teas.forEach(tea => {
         const mwSt = tea.preis * (tea.mehrwertsteuer / 100);
-        const bruttoPreis= tea.preis+mwSt;
+        const bruttoPreis = tea.preis + mwSt;
         const itemElement = document.createElement('li');
         itemElement.innerHTML = `
         <article>
@@ -51,11 +68,11 @@ function displayTeas() {
         itemElement.appendChild(button);
         fragment.appendChild(itemElement);
     });
-  
+
     //wenn das Element exisitert ergänzen
-    if(listElement){
-      listElement.appendChild(fragment);
-    }    
+    if (listElement) {
+        listElement.appendChild(fragment);
+    }
 }
 
 // Hinzufügen zum Warenkorb
@@ -116,7 +133,7 @@ function createCartTable(cart) {
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
                 <td><button onclick="removeFromCart('${key}')"><i class="fa fa-trash hand" aria-hidden="true"></i></button></td>
             </tr>`;
-       
+
     });
 
     tableHtml += `
@@ -125,7 +142,7 @@ function createCartTable(cart) {
             <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
         </tr>
     </table>`;
-    
+
     return tableHtml;
 }
 

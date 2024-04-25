@@ -6,7 +6,8 @@ $dbname = "fhwien";
 $logFile = "error_log.txt"; // Define the path to your log file
 
 // Function to log errors
-function logError($message) {
+function logError($message)
+{
     global $logFile;
     $timestamp = date("Y-m-d H:i:s");
     $msg = "{$timestamp} - ERROR: {$message}\n";
@@ -14,7 +15,7 @@ function logError($message) {
 }
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password);
 
 // Check connection
 if ($conn->connect_error) {
@@ -37,4 +38,3 @@ if ($conn->multi_query($sql)) {
 }
 
 $conn->close();
-?>
