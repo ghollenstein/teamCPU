@@ -160,40 +160,7 @@ CREATE TABLE
         FOREIGN KEY (order_id) REFERENCES orders (order_id)
     );
 
--- Testdaten
-INSERT INTO
-    users (username, password, email)
-VALUES
-    (
-        'alice',
-        'gafitanu',
-        'alice.gafitanu@edu.fh-wien.ac.at'
-    ),
-    (
-        'stefanie',
-        'bilgeri',
-        'stefanie.bilgeri@edu.fh-wien.ac.at'
-    ),
-    (
-        'georg',
-        'hollenstein',
-        'georg.hollenstein@edu.fh-wien.ac.at'
-    ),
-    (
-        'karolina',
-        'sarota',
-        'karolina.sarota@edu.fh-wien.ac.at'
-    ),
-    (
-        'roland',
-        'pregernig',
-        'roland.pregernig@edu.fh-wien.ac.at'
-    ),
-    (
-        'tobias',
-        'luger',
-        'tobias.luger@edu.fh-wien.ac.at'
-    );
+
 
 INSERT INTO
     categories (name)
@@ -299,73 +266,3 @@ VALUES
     (9, 1),
     (10, 1);
 
-INSERT INTO
-    carts (user_id)
-VALUES
-    (1),
-    (2);
-
-INSERT INTO
-    cart_items (cart_id, product_id, quantity)
-VALUES
-    (1, 1, 2),
-    (1, 3, 1),
-    (2, 2, 1);
-
-INSERT INTO
-    addresses (
-        user_id,
-        address_type,
-        street,
-        city,
-        state,
-        postal_code,
-        country
-    )
-VALUES
-    (
-        1,
-        'shipping',
-        '123 Tea Lane',
-        'Teatown',
-        'Teastate',
-        '12345',
-        'Tealand'
-    ),
-    (
-        1,
-        'billing',
-        '456 Tea Blvd',
-        'Teacity',
-        'Teastate',
-        '54321',
-        'Tealand'
-    );
-
-INSERT INTO
-    orders (
-        address_id_delivery,
-        address_id_billing,
-        user_id,
-        order_date,
-        total_price
-    )
-VALUES
-    (1, 2, 1, NOW (), 28.96);
-
-INSERT INTO
-    order_items (order_id, product_id, quantity, price, tax)
-VALUES
-    (1, 1, 1, 5.99, 0.20),
-    (1, 2, 1, 6.49, 0.20),
-    (1, 3, 1, 4.99, 0.10);
-
-INSERT INTO
-    payments (
-        order_id,
-        payment_type,
-        payment_status,
-        payment_date
-    )
-VALUES
-    (1, 'Credit Card', 'Completed', NOW ());

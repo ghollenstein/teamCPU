@@ -1,40 +1,40 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fhwien";
-$logFile = "error_log.txt"; // Define the path to your log file
+require_once '../class/Database.php';
 
-// Function to log errors
-function logError($message)
-{
-    global $logFile;
-    $timestamp = date("Y-m-d H:i:s");
-    $msg = "{$timestamp} - ERROR: {$message}\n";
-    file_put_contents($logFile, $msg, FILE_APPEND | LOCK_EX);
+// Path to the SQL file
+$sqlFilePath = 'datenmodell.sql';
+
+// Get database instance
+$dbInstance = Database::getInstance();
+$conn = $dbInstance->getConnection();
+
+// Function to execute queries from a file
+function executeSQLFromFile($filePath, $conn) {
+    // Read the entire file into a single string
+    $queries = file_get_contents($filePath);
+
+    // Split the file into individual queries
+    $queries = explode(';', $queries);
+
+    // Execute each query in the file
+    foreach ($queries as $query) {
+        $query = trim($query);
+        if (!empty($query)) {
+            if ($conn->query($query) === false) {
+                echo "Error executing query '$query': " . $conn->error . "<br/>";
+            } else {
+                echo "Successfully executed query: $query<br/>";
+            }
+        }
+    }
 }
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-    logError("Connection failed: " . $conn->connect_error);
-    die("Connection failed: " . $conn->connect_error); // Optionally, remove or modify the die statement for production
-}
-
-echo "01 Connected successfully<br />";
-
-// Read SQL file
-$sql = file_get_contents('datenmodell.sql');
-
-// Perform queries
-if ($conn->multi_query($sql)) {
-    echo "02 SQL script executed successfully.";
+// Check if the file exists and is readable
+if (is_readable($sqlFilePath)) {
+    executeSQLFromFile($sqlFilePath, $conn);
 } else {
-    $error = "Error executing SQL script: " . $conn->error;
-    logError($error);
-    echo $error; // Optionally, modify this for production to not display sensitive information
+    echo "SQL file does not exist or is not readable.";
 }
 
 $conn->close();
+?>
