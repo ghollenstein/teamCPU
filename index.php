@@ -1,7 +1,7 @@
 <?php
 include_once 'class/autoload.php';
-
 $controller = new Controller();
+$controller->handleActions();
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -14,11 +14,12 @@ $controller = new Controller();
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="font.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/res/font-awesome-4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="assets/res/jquery.min.js"></script>
     <script src="assets/res/lordicon.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script defer src="script.js"></script>
-    <link rel="stylesheet" href="assets/res/font-awesome-4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body>
@@ -36,11 +37,20 @@ $controller = new Controller();
                 <a href="./" class="logo"><i class="fa fa-coffee fa-2x" aria-hidden="true"></i> TEE & CO
                 </a>
             </div>
-            <div class="flex">
+            <div class="flex top_nav_wrapper">
+                <div class="meinkonto">
+                    <a href="index.php?page=meinkonto">
+                        <span class="warenkorb-icon">
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                            <em>Mein Konto</em>
+                        </span>
+                    </a>
+                </div>
                 <div class="warenkorb">
                     <a href="#">
                         <span class="warenkorb-icon">
                             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                            <em>Warenkorb</em>
                         </span>
                     </a>
                 </div>
@@ -50,6 +60,7 @@ $controller = new Controller();
                     <button class="buttonEckig" id="weiterShoppen">
                         weiter einkaufen
                     </button>
+                    <button class="buttonEckig" id="zurKassa">zur Kassa</button>
                 </aside>
             </div>
             <div class="nav_inner" style="display: none">
@@ -64,18 +75,26 @@ $controller = new Controller();
             </div>
         </div>
     </header>
-    <section class="video_wrapper">
-        <div class="video_content">
-            <h1>Best Vienna Tea</h1>
-            <sub>handmade in Vienna</sub>
-        </div>
-        <video width="100%" height="auto" autoplay muted loop>
-            <source src="assets/tee-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </section>    
+    <?php if (!isset($_GET['page'])) : ?>
+        <section class="video_wrapper">
+            <div class="video_content">
+                <h1>Best Vienna Tea</h1>
+                <sub>handmade in Vienna</sub>
+            </div>
+            <video width="100%" height="auto" autoplay muted loop>
+                <source src="assets/tee-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+    <?php endif; ?>
     <main class="content container">
-        <?php $controller->route(); ?>
+        <?php
+        $feedbackMessages = $controller->getFeedback();
+        foreach ($feedbackMessages as $feedback) {
+            echo "<div class='message {$feedback['type']}'>{$feedback['message']}</div>";
+        }
+        $controller->servePage();
+        ?>
     </main>
     <footer>
         <div class="container">

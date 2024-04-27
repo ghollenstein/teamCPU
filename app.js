@@ -131,7 +131,7 @@ function createCartTable(cart) {
                     <input type="number" value="${cart[key]}" min="1" onchange="updateQuantity('${key}', this.value)">
                 </td>
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
-                <td><button onclick="removeFromCart('${key}')"><i class="fa fa-trash hand" aria-hidden="true"></i></button></td>
+                <td><button data-id="${tea.id}" onclick="removeFromCart('${key}')">-</button></td>
             </tr>`;
 
     });
@@ -141,7 +141,9 @@ function createCartTable(cart) {
             <td colspan="3"><strong>Gesamtsumme</strong></td>
             <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
         </tr>
-    </table>`;
+    </table>
+    <button class="buttonEckig" id="zurKassa">zur Kassa</button>
+    `;
 
     return tableHtml;
 }
@@ -152,3 +154,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayTeas();
     displayCart();
 });
+
+
+//fadout für Meldungen
+$(document).ready(function () {
+    // Select all elements with the class 'message'
+    $('.message.success').delay(5000).fadeOut(1000, function () {
+        $(this).remove();
+    });
+});
+

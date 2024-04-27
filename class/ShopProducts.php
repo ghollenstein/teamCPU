@@ -36,4 +36,6 @@ class ShopProducts
         $data = $db->executeSQL($sql, [1], 'i', true);
         return $db->convertDbResultToJson($data);
     }
+
+    
 }

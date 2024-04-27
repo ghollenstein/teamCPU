@@ -28,9 +28,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (name, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (name) VALUES (?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssssss', $this->name, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('s', $this->name);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -57,14 +57,26 @@ public function read($where = "", $params = [], $types = "") {
 }
 
 public function update() {
-    $this->validate();
-    $query = "UPDATE $this->table_name SET name = ?, createdDate = ?, createdUser = ?, modDate = ?, modUser = ?, lockstate = ? WHERE category_id = ?";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssss', $this->name, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate, $this->category_id);
-    $stmt->execute();
-    return $stmt->affected_rows;
+    $params = [];
+    $types = '';
+    $updateParts = [];
+    if (isset($this->name)) {
+        $updateParts[] = 'name = ?';
+        $params[] = $this->name;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (!empty($updateParts)) {
+        $query = "UPDATE $this->table_name SET " . implode(', ', $updateParts) . " WHERE category_id = ?";
+        $params[] = $this->category_id;
+        $types .= 'i'; // Assuming the primary key is an integer
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    } else {
+        throw new Exception('No fields to update');
+    }
 }
-
 public function delete() {
     $query = "DELETE FROM $this->table_name WHERE category_id = ?";
     $stmt = $this->conn->prepare($query);

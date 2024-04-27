@@ -28,9 +28,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (order_id, payment_type, payment_status, payment_date, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (order_id, payment_type, payment_status, payment_date) VALUES (?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssss', $this->order_id, $this->payment_type, $this->payment_status, $this->payment_date, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('ssss', $this->order_id, $this->payment_type, $this->payment_status, $this->payment_date);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -57,14 +57,41 @@ public function read($where = "", $params = [], $types = "") {
 }
 
 public function update() {
-    $this->validate();
-    $query = "UPDATE $this->table_name SET order_id = ?, payment_type = ?, payment_status = ?, payment_date = ?, createdDate = ?, createdUser = ?, modDate = ?, modUser = ?, lockstate = ? WHERE payment_id = ?";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssssssssss', $this->order_id, $this->payment_type, $this->payment_status, $this->payment_date, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate, $this->payment_id);
-    $stmt->execute();
-    return $stmt->affected_rows;
+    $params = [];
+    $types = '';
+    $updateParts = [];
+    if (isset($this->order_id)) {
+        $updateParts[] = 'order_id = ?';
+        $params[] = $this->order_id;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (isset($this->payment_type)) {
+        $updateParts[] = 'payment_type = ?';
+        $params[] = $this->payment_type;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (isset($this->payment_status)) {
+        $updateParts[] = 'payment_status = ?';
+        $params[] = $this->payment_status;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (isset($this->payment_date)) {
+        $updateParts[] = 'payment_date = ?';
+        $params[] = $this->payment_date;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (!empty($updateParts)) {
+        $query = "UPDATE $this->table_name SET " . implode(', ', $updateParts) . " WHERE payment_id = ?";
+        $params[] = $this->payment_id;
+        $types .= 'i'; // Assuming the primary key is an integer
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    } else {
+        throw new Exception('No fields to update');
+    }
 }
-
 public function delete() {
     $query = "DELETE FROM $this->table_name WHERE payment_id = ?";
     $stmt = $this->conn->prepare($query);

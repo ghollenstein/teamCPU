@@ -34,8 +34,18 @@ class BaseModel
     {
         // Generic delete logic
     }
-    private function validate($id)
+
+
+    /**
+     * Mappt die Daten aus einem Array dynamisch auf Modelleigenschaften.
+     * @param array $data Assoziatives Array mit Schlüsseln, die den Eigenschaftsnamen entsprechen.
+     */
+    public function mapData(array $data)
     {
-        // Generic delete logic
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
+        }
     }
 }

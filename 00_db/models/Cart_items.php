@@ -32,9 +32,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (cart_id, product_id, quantity, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (cart_id, product_id, quantity) VALUES (?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssssssss', $this->cart_id, $this->product_id, $this->quantity, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('sss', $this->cart_id, $this->product_id, $this->quantity);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -61,14 +61,36 @@ public function read($where = "", $params = [], $types = "") {
 }
 
 public function update() {
-    $this->validate();
-    $query = "UPDATE $this->table_name SET cart_id = ?, product_id = ?, quantity = ?, createdDate = ?, createdUser = ?, modDate = ?, modUser = ?, lockstate = ? WHERE product_id = ?";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssss', $this->cart_id, $this->product_id, $this->quantity, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate, $this->product_id);
-    $stmt->execute();
-    return $stmt->affected_rows;
+    $params = [];
+    $types = '';
+    $updateParts = [];
+    if (isset($this->cart_id)) {
+        $updateParts[] = 'cart_id = ?';
+        $params[] = $this->cart_id;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (isset($this->product_id)) {
+        $updateParts[] = 'product_id = ?';
+        $params[] = $this->product_id;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (isset($this->quantity)) {
+        $updateParts[] = 'quantity = ?';
+        $params[] = $this->quantity;
+        $types .= 's'; // Adjust based on the actual expected type
+    }
+    if (!empty($updateParts)) {
+        $query = "UPDATE $this->table_name SET " . implode(', ', $updateParts) . " WHERE product_id = ?";
+        $params[] = $this->product_id;
+        $types .= 'i'; // Assuming the primary key is an integer
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    } else {
+        throw new Exception('No fields to update');
+    }
 }
-
 public function delete() {
     $query = "DELETE FROM $this->table_name WHERE product_id = ?";
     $stmt = $this->conn->prepare($query);

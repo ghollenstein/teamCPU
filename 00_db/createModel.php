@@ -33,7 +33,7 @@ foreach ($tables as $table) {
         if ($column['Key'] === 'PRI') {
             $primaryKey = $column['Field'];
         }
-        if ($column['Extra'] !== 'auto_increment') {
+        if ($column['Extra'] !== 'auto_increment' && $column['Default'] === null && $column['Field'] !== 'modDate') {
             $nonAutoIncrementFields[] = $column;
         }
         if ($column['Null'] === 'NO' && $column['Default'] === null && $column['Extra'] !== 'auto_increment') {
@@ -53,6 +53,7 @@ foreach ($tables as $table) {
     $classContent .= "    return true;\n}\n\n";
 
     // Create
+    // Erzeugen der INSERT-Anweisung
     $insertFields = array_map(function ($col) {
         return $col['Field'];
     }, $nonAutoIncrementFields);
@@ -94,19 +95,37 @@ foreach ($tables as $table) {
     $classContent .= "    return \$result->fetch_all(MYSQLI_ASSOC);\n";
     $classContent .= "}\n\n";
 
-    // Update
-    $updateAssignments = array_map(function ($col) {
-        return $col['Field'] . " = ?";
-    }, $nonAutoIncrementFields);
-    $classContent .= "public function update() {\n";
-    $classContent .= "    \$this->validate();\n";
-    $classContent .= "    \$query = \"UPDATE \$this->table_name SET " . implode(', ', $updateAssignments) . " WHERE $primaryKey = ?\";\n";
-    $classContent .= "    \$stmt = \$this->conn->prepare(\$query);\n";
-    $fieldValues[] = '$this->' . $primaryKey; // Add primary key value at the end for WHERE clause
-    $classContent .= "    \$stmt->bind_param('" . str_repeat("s", count($nonAutoIncrementFields) + 1) . "', " . implode(', ', $fieldValues) . ");\n";
-    $classContent .= "    \$stmt->execute();\n";
-    $classContent .= "    return \$stmt->affected_rows;\n";
-    $classContent .= "}\n\n";
+    // Erzeugen der UPDATE-Anweisung, ohne modDate zu setzen
+    // Update method
+$classContent .= "public function update() {\n";
+    $classContent .= "    \$params = [];\n";
+    $classContent .= "    \$types = '';\n";
+    $classContent .= "    \$updateParts = [];\n";
+    
+    foreach ($nonAutoIncrementFields as $col) {
+        if ($col['Field'] !== 'modDate') { // Exclude modDate from being manually updated
+            $classContent .= "    if (isset(\$this->{$col['Field']})) {\n";
+            $classContent .= "        \$updateParts[] = '{$col['Field']} = ?';\n";
+            $classContent .= "        \$params[] = \$this->{$col['Field']};\n";
+            $classContent .= "        \$types .= 's'; // Adjust based on the actual expected type\n";
+            $classContent .= "    }\n";
+        }
+    }
+    
+    $classContent .= "    if (!empty(\$updateParts)) {\n";
+    $classContent .= "        \$query = \"UPDATE \$this->table_name SET \" . implode(', ', \$updateParts) . \" WHERE $primaryKey = ?\";\n";
+    $classContent .= "        \$params[] = \$this->$primaryKey;\n";
+    $classContent .= "        \$types .= 'i'; // Assuming the primary key is an integer\n";
+    $classContent .= "        \$stmt = \$this->conn->prepare(\$query);\n";
+    $classContent .= "        \$stmt->bind_param(\$types, ...\$params);\n";
+    $classContent .= "        \$stmt->execute();\n";
+    $classContent .= "        return \$stmt->affected_rows;\n";
+    $classContent .= "    } else {\n";
+    $classContent .= "        throw new Exception('No fields to update');\n";
+    $classContent .= "    }\n";
+    $classContent .= "}\n";
+    
+
 
     // Delete
     $classContent .= "public function delete() {\n";
