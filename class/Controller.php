@@ -132,4 +132,11 @@ class Controller
             echo "</pre>";
         }
     }
+
+    public function getPostVar($name)
+    {
+        if (isset($_POST[$name])) {
+            echo htmlspecialchars($_POST[$name]);
+        }
+    }
 }

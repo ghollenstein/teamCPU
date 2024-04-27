@@ -16,6 +16,30 @@ class Account
     {
         $this->conn->begin_transaction();
         try {
+            // Validierung der E-Mail-Adresse
+            if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
+                throw new Exception("Ungültige E-Mail-Adresse!");
+            }
+
+            // Validierung des Passworts
+            if (strlen($userData['password']) < 8) {
+                throw new Exception("Das Passwort muss mindestens 8 Zeichen lang sein!");
+            }
+
+            if (
+                !preg_match('/[A-Z]/', $userData['password']) ||
+                !preg_match('/[a-z]/', $userData['password']) ||
+                !preg_match('/[0-9]/', $userData['password']) ||
+                !preg_match('/[\^£$%&*()}{@#~?><>,|=_+!-]/', $userData['password'])
+            ) {
+                throw new Exception("Das Passwort muss Großbuchstaben, Kleinbuchstaben, Zahlen und Sonderzeichen enthalten!");
+            }
+
+            // Prüfen, ob die Passwörter übereinstimmen
+            if ($userData['password'] !== $userData['reg_password_2']) {
+                throw new Exception("Die Passwörter stimmen nicht überein!");
+            }
+
             // Setzen der Benutzerdaten
             $this->userModel->mapData($userData);
             $this->userModel->password = password_hash($userData['password'], PASSWORD_DEFAULT); // Verschlüsseln des Passworts
@@ -32,6 +56,7 @@ class Account
             throw $e;
         }
     }
+
 
     public function getUserData()
     {

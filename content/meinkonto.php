@@ -4,7 +4,8 @@ $controller = new Controller();
 ?>
 <section class="teesorten">
     <h1>Mein Konto</h1>
-    <?php if ($controller->login->isUserLoggedIn() == true) :
+    <?php    
+    if ($controller->login->isUserLoggedIn() == true) :
         $userData = $controller->account->getUserData()[0];
     ?>
         <div class="mein_konto_wrapper">
@@ -147,7 +148,7 @@ $controller = new Controller();
                 <form method="post" class="konto_form">
                     <p>
                         <label for="username">E-Mail-Adresse&nbsp;<span class="required">*</span></label>
-                        <input type="text" name="username" id="username" autocomplete="username" value="">
+                        <input type="text" name="username" id="username" autocomplete="username" value="<?php $controller->getPostVar("username") ?>">
                     </p>
                     <p>
                         <label for="password">Passwort&nbsp;<span class="required">*</span></label>
@@ -161,15 +162,15 @@ $controller = new Controller();
                 <form method="post" class="konto_form">
                     <p>
                         <label for="reg_firstname">Vorname</span></label>
-                        <input type="text" name="firstname" id="reg_firstname">
+                        <input type="text" name="firstname" id="reg_firstname" value="<?php $controller->getPostVar("firstname") ?>">
                     </p>
                     <p>
                         <label for="reg_lastname">Nachname</span></label>
-                        <input type="text" name="lastname" id="reg_lastname" value="">
+                        <input type="text" name="lastname" id="reg_lastname" value="<?php $controller->getPostVar("lastname") ?>">
                     </p>
                     <p>
                         <label for="reg_email">E-Mail-Adresse&nbsp;<span>*</span></label>
-                        <input required type="email" name="email" id="reg_email" autocomplete="email" value="">
+                        <input required type="email" name="email" id="reg_email" autocomplete="email" value="<?php $controller->getPostVar("email") ?>">
                     </p>
 
                     <p>
