@@ -31,9 +31,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (product_id, category_id) VALUES (?, ?)";
+    $query = "INSERT INTO $this->table_name (product_id, category_id, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ss', $this->product_id, $this->category_id);
+    $stmt->bind_param('sssssss', $this->product_id, $this->category_id, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -60,31 +60,14 @@ public function read($where = "", $params = [], $types = "") {
 }
 
 public function update() {
-    $params = [];
-    $types = '';
-    $updateParts = [];
-    if (isset($this->product_id)) {
-        $updateParts[] = 'product_id = ?';
-        $params[] = $this->product_id;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (isset($this->category_id)) {
-        $updateParts[] = 'category_id = ?';
-        $params[] = $this->category_id;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (!empty($updateParts)) {
-        $query = "UPDATE $this->table_name SET " . implode(', ', $updateParts) . " WHERE category_id = ?";
-        $params[] = $this->category_id;
-        $types .= 'i'; // Assuming the primary key is an integer
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param($types, ...$params);
-        $stmt->execute();
-        return $stmt->affected_rows;
-    } else {
-        throw new Exception('No fields to update');
-    }
+    $this->validate();
+    $query = "UPDATE $this->table_name SET product_id = ?, category_id = ?, createdDate = ?, createdUser = ?, modUser = ?, lockstate = ?, modDate = NOW() WHERE category_id = ?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bind_param('sssssss', $this->product_id, $this->category_id, $this->createdDate, $this->createdUser, $this->modUser, $this->lockstate, $this->category_id);
+    $stmt->execute();
+    return $stmt->affected_rows;
 }
+
 public function delete() {
     $query = "DELETE FROM $this->table_name WHERE category_id = ?";
     $stmt = $this->conn->prepare($query);

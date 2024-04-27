@@ -34,9 +34,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (firstname, lastname, password, email) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (firstname, lastname, password, email, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssss', $this->firstname, $this->lastname, $this->password, $this->email);
+    $stmt->bind_param('sssssssss', $this->firstname, $this->lastname, $this->password, $this->email, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -63,41 +63,14 @@ public function read($where = "", $params = [], $types = "") {
 }
 
 public function update() {
-    $params = [];
-    $types = '';
-    $updateParts = [];
-    if (isset($this->firstname)) {
-        $updateParts[] = 'firstname = ?';
-        $params[] = $this->firstname;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (isset($this->lastname)) {
-        $updateParts[] = 'lastname = ?';
-        $params[] = $this->lastname;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (isset($this->password)) {
-        $updateParts[] = 'password = ?';
-        $params[] = $this->password;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (isset($this->email)) {
-        $updateParts[] = 'email = ?';
-        $params[] = $this->email;
-        $types .= 's'; // Adjust based on the actual expected type
-    }
-    if (!empty($updateParts)) {
-        $query = "UPDATE $this->table_name SET " . implode(', ', $updateParts) . " WHERE user_id = ?";
-        $params[] = $this->user_id;
-        $types .= 'i'; // Assuming the primary key is an integer
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param($types, ...$params);
-        $stmt->execute();
-        return $stmt->affected_rows;
-    } else {
-        throw new Exception('No fields to update');
-    }
+    $this->validate();
+    $query = "UPDATE $this->table_name SET firstname = ?, lastname = ?, password = ?, email = ?, createdDate = ?, createdUser = ?, modUser = ?, lockstate = ?, modDate = NOW() WHERE user_id = ?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bind_param('sssssssss', $this->firstname, $this->lastname, $this->password, $this->email, $this->createdDate, $this->createdUser, $this->modUser, $this->lockstate, $this->user_id);
+    $stmt->execute();
+    return $stmt->affected_rows;
 }
+
 public function delete() {
     $query = "DELETE FROM $this->table_name WHERE user_id = ?";
     $stmt = $this->conn->prepare($query);
