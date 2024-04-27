@@ -42,9 +42,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (name, description, image, tax, price, stock, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (name, description, image, tax, price, stock) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('ssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -72,9 +72,9 @@ public function read($where = "", $params = [], $types = "") {
 
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET name = ?, description = ?, image = ?, tax = ?, price = ?, stock = ?, createdDate = ?, createdUser = ?, modUser = ?, lockstate = ?, modDate = NOW() WHERE product_id = ?";
+    $query = "UPDATE $this->table_name SET name = ?, description = ?, image = ?, tax = ?, price = ?, stock = ?, modDate = NOW() WHERE product_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock, $this->createdDate, $this->createdUser, $this->modUser, $this->lockstate, $this->product_id);
+    $stmt->bind_param('sssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock, $this->product_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

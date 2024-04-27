@@ -33,7 +33,7 @@ foreach ($tables as $table) {
         if ($column['Key'] === 'PRI') {
             $primaryKey = $column['Field'];
         }
-        if ($column['Extra'] !== 'auto_increment') {
+        if ($column['Extra'] !== 'auto_increment' && $column['Default'] === null) {
             $nonAutoIncrementFields[] = $column;
         }
         if ($column['Null'] === 'NO' && $column['Default'] === null && $column['Extra'] !== 'auto_increment') {

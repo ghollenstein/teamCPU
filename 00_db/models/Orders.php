@@ -30,9 +30,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (address_id_delivery, address_id_billing, user_id, order_date, total_price, status, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (address_id_delivery, address_id_billing, user_id, order_date, total_price, status) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssssss', $this->address_id_delivery, $this->address_id_billing, $this->user_id, $this->order_date, $this->total_price, $this->status, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('ssssss', $this->address_id_delivery, $this->address_id_billing, $this->user_id, $this->order_date, $this->total_price, $this->status);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -60,9 +60,9 @@ public function read($where = "", $params = [], $types = "") {
 
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET address_id_delivery = ?, address_id_billing = ?, user_id = ?, order_date = ?, total_price = ?, status = ?, createdDate = ?, createdUser = ?, modUser = ?, lockstate = ?, modDate = NOW() WHERE order_id = ?";
+    $query = "UPDATE $this->table_name SET address_id_delivery = ?, address_id_billing = ?, user_id = ?, order_date = ?, total_price = ?, status = ?, modDate = NOW() WHERE order_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssssss', $this->address_id_delivery, $this->address_id_billing, $this->user_id, $this->order_date, $this->total_price, $this->status, $this->createdDate, $this->createdUser, $this->modUser, $this->lockstate, $this->order_id);
+    $stmt->bind_param('sssssss', $this->address_id_delivery, $this->address_id_billing, $this->user_id, $this->order_date, $this->total_price, $this->status, $this->order_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

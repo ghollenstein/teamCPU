@@ -34,9 +34,9 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (firstname, lastname, password, email, createdDate, createdUser, modDate, modUser, lockstate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (firstname, lastname, password, email) VALUES (?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssss', $this->firstname, $this->lastname, $this->password, $this->email, $this->createdDate, $this->createdUser, $this->modDate, $this->modUser, $this->lockstate);
+    $stmt->bind_param('ssss', $this->firstname, $this->lastname, $this->password, $this->email);
     $stmt->execute();
     return $stmt->affected_rows;
 }
@@ -64,9 +64,9 @@ public function read($where = "", $params = [], $types = "") {
 
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET firstname = ?, lastname = ?, password = ?, email = ?, createdDate = ?, createdUser = ?, modUser = ?, lockstate = ?, modDate = NOW() WHERE user_id = ?";
+    $query = "UPDATE $this->table_name SET firstname = ?, lastname = ?, password = ?, email = ?, modDate = NOW() WHERE user_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssssss', $this->firstname, $this->lastname, $this->password, $this->email, $this->createdDate, $this->createdUser, $this->modUser, $this->lockstate, $this->user_id);
+    $stmt->bind_param('sssss', $this->firstname, $this->lastname, $this->password, $this->email, $this->user_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }
