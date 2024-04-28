@@ -11,7 +11,7 @@ USE fhwien;
 CREATE TABLE
     users (
         user_id INT AUTO_INCREMENT PRIMARY KEY,
-        firstname VARCHAR(255) ,
+        firstname VARCHAR(255),
         lastname VARCHAR(255),
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL unique,
@@ -61,34 +61,6 @@ CREATE TABLE
         PRIMARY KEY (product_id, category_id),
         FOREIGN KEY (product_id) REFERENCES products (product_id),
         FOREIGN KEY (category_id) REFERENCES categories (category_id)
-    );
-
-CREATE TABLE
-    carts (
-        cart_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        session_id varchar(255),
-        createdDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-        createdUser INT not null default 0,
-        modDate DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        modUser INT not null default 0,
-        lockstate int default 0,
-        FOREIGN KEY (user_id) REFERENCES users (user_id)
-    );
-
-CREATE TABLE
-    cart_items (
-        cart_id INT,
-        product_id INT,
-        quantity INT,
-        createdDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-        createdUser INT not null default 0,
-        modDate DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        modUser INT not null default 0,
-        lockstate int default 0,
-        PRIMARY KEY (cart_id, product_id),
-        FOREIGN KEY (cart_id) REFERENCES carts (cart_id),
-        FOREIGN KEY (product_id) REFERENCES products (product_id)
     );
 
 CREATE TABLE
@@ -160,8 +132,6 @@ CREATE TABLE
         FOREIGN KEY (order_id) REFERENCES orders (order_id)
     );
 
-
-
 INSERT INTO
     categories (name)
 VALUES
@@ -176,7 +146,7 @@ VALUES
         'Erfrischender und belebender grüner Tee.',
         20,
         4.99,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/gruener-tee.jpeg'
     ),
     (
@@ -184,7 +154,7 @@ VALUES
         'Kräftiger und aromatischer schwarzer Tee.',
         20,
         5.99,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/schwarzer-tee.jpeg'
     ),
     (
@@ -192,7 +162,7 @@ VALUES
         'Milder und fein aromatischer weißer Tee.',
         20,
         6.50,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/weisser-tee.jpeg'
     ),
     (
@@ -200,7 +170,7 @@ VALUES
         'Traditioneller, halbfermentierter Tee mit einem einzigartigen Geschmack.',
         20,
         7.00,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/oolong-tee.jpeg'
     ),
     (
@@ -208,7 +178,7 @@ VALUES
         'Erfrischender Tee mit dem kühlenden Geschmack von Pfefferminze.',
         7,
         3.99,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/pfefferminztee.jpeg'
     ),
     (
@@ -216,7 +186,7 @@ VALUES
         'Beruhigender und entspannender Tee mit Kamillenblüten.',
         7,
         3.50,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/kamillentee.jpeg'
     ),
     (
@@ -224,7 +194,7 @@ VALUES
         'Süßer Tee aus einer Mischung verschiedener Früchte.',
         20,
         4.25,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/fruechtetee.jpeg'
     ),
     (
@@ -232,7 +202,7 @@ VALUES
         'Würziger Tee mit einer Mischung aus Schwarztee und verschiedenen Gewürzen.',
         20,
         5.75,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/chai-tee.jpeg'
     ),
     (
@@ -240,7 +210,7 @@ VALUES
         'Belebender Tee aus den Blättern des Mate-Strauchs.',
         20,
         4.95,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/mate-tee.jpeg'
     ),
     (
@@ -248,7 +218,7 @@ VALUES
         'Berühmter Schwarztee aromatisiert mit Bergamotte-Öl.',
         20,
         5.50,
-        100,
+        FLOOR(RAND () * (200 - 1 + 1)) + 1,
         'assets/earl-grey.jpeg'
     );
 
@@ -266,3 +236,28 @@ VALUES
     (9, 1),
     (10, 1);
 
+INSERT INTO
+    users -- password 1teamCpu@test.at
+    (
+        firstname,
+        lastname,
+        password,
+        email,
+        createdDate,
+        createdUser,
+        modDate,
+        modUser,
+        lockstate
+    )
+VALUES
+    (
+        'Team',
+        'CPU',
+        '$2y$10$yl/BRnKACeucvSh4BF1aquxlSpOwZudEibr2OmEEL/d3VF1gPkGN2',
+        'teamCpu@test.at',
+        '2024-04-28 12:18:34.000',
+        0,
+        '2024-04-28 12:18:34.000',
+        0,
+        0
+    );
