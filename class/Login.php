@@ -11,7 +11,7 @@ class Login
 
     public function authenticate($username, $password)
     {
-        $stmt = $this->dbConnection->prepare("SELECT user_id,email, password FROM users WHERE email = ?");
+        $stmt = $this->dbConnection->prepare("SELECT user_id,email,firstname, lastname, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -27,6 +27,7 @@ class Login
     private function setSession($user)
     {
         $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['firstname'] = $user['firstname'];
         $_SESSION['logged_in'] = true;  // Setzen des Login-Status
     }
 

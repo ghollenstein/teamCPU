@@ -42,7 +42,11 @@ $controller->handleActions();
                     <a href="index.php?page=meinkonto">
                         <span class="warenkorb-icon">
                             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                            <em>Mein Konto</em>
+                            <?php if ($controller->login->isUserLoggedIn() == true) {
+                                echo "<em>Mein Konto</em>";
+                            } else {
+                                echo "<em>zum Login</em>";
+                            } ?>
                         </span>
                     </a>
                 </div>

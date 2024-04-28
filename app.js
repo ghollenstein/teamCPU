@@ -139,6 +139,11 @@ function removeFromCart(id) {
 // Warenkorb anzeigen
 function displayCart() {
     const cart = getCart();
+    const cartData = document.getElementById('cartData');
+    if (cartData) {
+        cartData.value = JSON.stringify(cart);
+    }
+
     const cartElement = document.getElementById('warenkorb');
     const cartElementChekcout = document.getElementById('checkout_warenkorb');
     cartElement.innerHTML = Object.keys(cart).length ? createCartTable(cart) : '<p>Dein Warenkorb ist leer.</p>';

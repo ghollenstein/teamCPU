@@ -15,3 +15,6 @@ PW: 1teamCpu@test.at
 2. Starte eine Konsole (git muss installiert sein! https://github.com/git-guides/install-git)
 3. git clone https://github.com/ghollenstein/teamCPU
 4. Aufruf über http://localhost/teamCpu/
+
+## Testdaten für Stripe
+Kartennummer: 4242424242424242

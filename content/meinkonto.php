@@ -187,7 +187,7 @@ $controller = new Controller();
                         </span>
                     </p>
                     <div>
-                        <p>Ihre persönlichen Daten werden verwendet, um Ihr Erlebnis auf dieser Website zu unterstützen, den Zugriff auf Ihr Konto zu verwalten und für andere in unserem beschriebene Zwecke <a href="index.php?page=datenschutz" target="_blank">Datenschutzerklärung</a>.</p>
+                        <p>Ihre persönlichen Daten werden verwendet, um Ihr Erlebnis auf dieser Website zu unterstützen, den Zugriff auf Ihr Konto zu verwalten und für andere in unserem beschriebene Zwecke <a href="#" target="_blank">Datenschutzerklärung</a>.</p>
                     </div>
                     <p>
                         <button type="submit" name="register" value="Registrieren" class="cta">Registrieren</button>

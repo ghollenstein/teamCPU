@@ -706,7 +706,7 @@ form.konto_form {
 }
 
 #payment-form {
-    background-color: #e7e7e7;
+    background-color: #ededed;
     border-radius: 6px;
     margin: 10px 0 0;
     padding: 10px;
@@ -853,7 +853,8 @@ form.konto_form {
     /* Dunkelorange für Warnungen */
 }
 
-.message.error {
+.message.error,
+#card-errors {
     background-color: #d32f2f;
     /* Dunkelrot für Fehler */
 }
@@ -861,4 +862,8 @@ form.konto_form {
 .message.success {
     background-color: #388e3c;
     /* Dunkelgrün für Erfolg */
+}
+
+#card-errors {
+    color: #fff;    
 }

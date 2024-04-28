@@ -1,12 +1,13 @@
 <?php
 class Controller
 {
-    private $params = [];
+    public $params = [];
     private $db;
     private $session;
     private $debug = false;
     public $login;
     public $account;
+    public $order;
 
     public function __construct($debug = false)
     {
@@ -18,6 +19,7 @@ class Controller
         $this->db = Database::getInstance()->getConnection();
         $this->login = new Login($this->db);
         $this->account = new Account($this->db);
+        $this->order = new Order($this->db, $this);
     }
 
 
@@ -72,6 +74,22 @@ class Controller
             case 'accountUpdate':
                 if ($method === 'POST') $this->handleAccountUpdate();
                 break;
+            case 'processCheckout':
+                if ($method === 'POST') $this->handleOrder();
+                break;
+        }
+    }
+
+    private function handleOrder()
+    {
+
+        try {
+            $this->order->saveOrder($this->params);
+            $this->addFeedback("Bestellung erfolgreich erstellt!", "success");
+            header("Location: index.php?page=meinkonto");
+            exit;
+        } catch (Exception $e) {
+            $this->addFeedback("Fehler: " . $e->getMessage(), "error");
         }
     }
 
