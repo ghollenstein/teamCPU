@@ -31,6 +31,7 @@ class ShopProducts
         where 
             p.lockstate=0 
             and pc.lockstate=0
+            and p.stock >0
             and c.category_id=? ";
 
         $data = $db->executeSQL($sql, [1], 'i', true);

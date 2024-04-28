@@ -105,7 +105,7 @@ $controller->handleActions();
                     <fieldset>
                         <input name="dsgvo" id="dsgvo" type="checkbox" value="1" required>
                         <label for="dsgvo">Ich bin mit der Verarbeitung meiner angegebenen Daten einverstanden. Weitere
-                            Informationen zum <a href="#" target="_blank">Datenschutz</a>.</label>
+                            Informationen zum <a href="index.php?page=datenschutz" target="_blank">Datenschutz</a>.</label>
                     </fieldset>
                 </form>
             </section>
