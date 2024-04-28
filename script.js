@@ -56,8 +56,7 @@ $(document).ready(function () {
     }
 
     // Event-Handler für das Klicken auf einen Tab
-    $('.mein_konto_wrapper nav a').click(function (e) {
-        e.preventDefault();  // Verhindere das Standardverhalten des Browsers
+    $('.mein_konto_wrapper nav a').click(function (e) {        
         var anker = $(this).attr('href');
         activateTab(anker, true);
     });
