@@ -116,12 +116,15 @@ class Account
     public function getOrders()
     {
         $db = new Sql($this->conn);
+        $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
         $sql = "select o.createdDate, o.order_id , o.total_price , o.status,p.name , oi.price as netto, (oi.tax/100+1)*oi.price as brutto, oi.quantity  from orders o
         inner join order_items oi on oi.order_id =o.order_id 
         left join products p on p.product_id =oi.product_id  
-        where o.user_id =? and o.lockstate =0 ";
+        where o.user_id =? and o.lockstate =0
+        order by o.order_id, oi.product_id
+        ";
 
-        return $db->executeSQL($sql, [$_SESSION['user_id']], 'i', true);
+        return $db->executeSQL($sql, [$userId], 'i', true);
     }
 }
