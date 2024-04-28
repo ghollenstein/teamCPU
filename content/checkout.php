@@ -1,5 +1,9 @@
 <?php
 $controller = new Controller();
+if (!$controller->login->isUserLoggedIn()) {
+    $this->addFeedback("Um eine Bestellung zu tätigen, erstellen Sie zuerst ein Konto oder melden Sie sich an!", "success");
+    header("Location: index.php?page=meinkonto");
+}
 
 ?>
 <section id="checkoutProcess" class="teesorten">

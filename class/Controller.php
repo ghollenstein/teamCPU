@@ -18,7 +18,7 @@ class Controller
         $this->session = $this->initSession();
         $this->db = Database::getInstance()->getConnection();
         $this->login = new Login($this->db);
-        $this->account = new Account($this->db);
+        $this->account = new Account($this->db,$this);
         $this->order = new Order($this->db, $this);
     }
 
@@ -54,6 +54,10 @@ class Controller
         $feedback = $_SESSION['feedback'] ?? [];
         unset($_SESSION['feedback']);
         return $feedback;
+    }
+
+    public function getOrderHistory(){
+        return $this->account->getOrders();
     }
 
     public function handleActions()

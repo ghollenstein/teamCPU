@@ -1,6 +1,6 @@
 <?php
 $controller = new Controller();
-
+$orders = $controller->getOrderHistory();
 ?>
 <section class="teesorten">
     <h1>Mein Konto</h1>
@@ -21,52 +21,46 @@ $controller = new Controller();
             <div class="meinkonto_content_wrapper">
                 <ol>
                     <li id="orders_content" class="meinkonto_list_element">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Bestellnummer</th>
-                                    <th>Datum</th>
-                                    <th>Produkt</th>
-                                    <th>Gesamtsumme</th>
-                                    <th>Lieferadresse</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#19572</td>
-                                    <td><time datetime="2024-01-31T10:24:53+00:00">Januar 31, 2024</time></td>
-                                    <td>Grüner Tee</td>
-                                    <td><span>37,05€</span> für 1 Artikel</td>
-                                    <td>
-                                        Max Musterman<br>
-                                        Museterstraße 17<br>
-                                        1234 Musterort<br>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#18640</td>
-                                    <td><time datetime="2023-05-17T14:13:47+00:00">Mai 17, 2023</time></td>
-                                    <td>Schwarzer Tee</td>
-                                    <td><span>540,55€</span> für 1 Artikel</td>
-                                    <td>
-                                        Max Musterman<br>
-                                        Museterstraße 17<br>
-                                        1234 Musterort<br>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#18550</td>
-                                    <td><time datetime="2023-05-04T14:59:01+00:00">Mai 4, 2023</time></td>
-                                    <td>Früchtetee</td>
-                                    <td><span>1.349,10€</span> für 1 Artikel</td>
-                                    <td>
-                                        Max Musterman<br>
-                                        Museterstraße 17<br>
-                                        1234 Musterort<br>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <?php
+                        $currentOrderId = null;
+                        $totalBrutto = 0;
+
+                        echo '<table border="1" style="width:100%; border-collapse: collapse;">';
+                        echo '<thead>';
+                        echo '<tr><th>Bestellnummer</th><th>Datum</th><th>Produkt</th><th>Brutto</th><th>Menge</th><th>Gesamt</th></tr>';
+                        echo '</thead>';
+                        echo '<tbody>';
+
+                        foreach ($orders['data'] as $order) {
+                            if ($currentOrderId !== $order['order_id']) {
+                                if ($currentOrderId !== null) {
+                                    // Display the total for the previous order
+                                    echo "<tr style='background-color: #f2f2f2; font-weight:bold;'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td>" . number_format($totalBrutto, 2) . " €</td></tr>";
+                                }
+                                // Reset total and update current order ID
+                                $totalBrutto = 0;
+                                $currentOrderId = $order['order_id'];
+                            }
+
+                            $totalBrutto += $order['quantity'] * $order['brutto'];
+
+                            echo "<tr>";
+                            echo "<td>#" . htmlspecialchars($order['order_id']) . "</td>";
+                            echo "<td>" . htmlspecialchars($order['createdDate']) . "</td>";
+                            echo "<td>" . htmlspecialchars($order['name']) . "</td>";
+                            echo "<td>" . number_format($order['brutto'], 2) . " €</td>";
+                            echo "<td>" . htmlspecialchars($order['quantity']) . "</td>";
+                            echo "<td>" . number_format($order['quantity'] * $order['brutto'], 2) . " €</td>";
+                            echo "</tr>";
+                        }
+                        if ($currentOrderId !== null) {
+                            // Display the total for the last order
+                            echo "<tr style='background-color: #f2f2f2; font-weight:bold;'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td>" . number_format($totalBrutto, 2) . " €</td></tr>";
+                        }
+
+                        echo '</tbody>';
+                        echo '</table>';
+                        ?>
                     </li>
                     <li id="adresses_content" style="display:none" class="meinkonto_list_element">
                         <ol class="adresse_list">

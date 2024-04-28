@@ -3,6 +3,7 @@
 class Login
 {
     private $dbConnection;
+    public $userId;
 
     public function __construct($dbConnection)
     {
@@ -26,6 +27,7 @@ class Login
 
     private function setSession($user)
     {
+        $this->userId=$user['user_id'];
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['firstname'] = $user['firstname'];
         $_SESSION['logged_in'] = true;  // Setzen des Login-Status
