@@ -8,14 +8,9 @@ const CART_KEY = 'warenkorb';
 async function loadTeas() {
     try {
         const requestOptions = {
-            method: 'POST', // Using POST method
-            headers: {
-                'Content-Type': 'application/json' // Specify the content type as JSON
-            },
-            body: JSON.stringify({
-                entity: 'ShopProducts', // Entity to query
-                action: 'getProducts'   // Action to perform
-            })
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ entity: 'ShopProducts', action: 'getProducts' })
         };
         const response = await fetch('api/', requestOptions);
         let resJson = await response.json();
@@ -25,7 +20,6 @@ async function loadTeas() {
         } else {
             throw new Error(resJson.error);
         }
-
     } catch (error) {
         console.error('Fehler beim Laden der Teesorten:', error);
         alert('Fehler beim Laden der Teesorten!')
@@ -58,43 +52,49 @@ function displayTeas() {
             <div class="product_inner">
             <h3>${tea.name} - ${bruttoPreis.toFixed(2)}€</h3>
             <p>${tea.beschreibung}</p>
-            <p><a href="${tea.link}" target="_blank">Mehr erfahren</a></p>
+            <p><center>Lagerstand: ${tea.lagerstand}</center></p>
             </div>
         </article>
         `;
         const button = document.createElement('button');
         button.textContent = 'In den Warenkorb';
-        button.addEventListener('click', () => addToCart(tea.name, 1));
+        button.addEventListener('click', () => addToCart(tea.id, tea.name, 1));
         itemElement.appendChild(button);
         fragment.appendChild(itemElement);
     });
 
-    //wenn das Element exisitert ergänzen
     if (listElement) {
         listElement.appendChild(fragment);
     }
 }
 
 // Hinzufügen zum Warenkorb
-function addToCart(name, quantity) {
+function addToCart(id, name, quantity) {
     const cart = getCart();
-    var quan = Number(cart[name])
-    cart[name] = (quan || 0) + quantity;
+    if (cart[id]) {
+        cart[id].quantity += quantity;
+    } else {
+        cart[id] = { name: name, quantity: quantity };
+    }
     saveCart(cart);
     displayCart();
 }
 
 // Menge aktualisieren
-function updateQuantity(name, quantity) {
+function updateQuantity(id, quantity) {
     const cart = getCart();
-    quantity > 0 ? cart[name] = quantity : delete cart[name];
+    if (quantity > 0) {
+        cart[id].quantity = quantity;
+    } else {
+        delete cart[id];
+    }
     saveCart(cart);
     displayCart();
 }
 
 // Artikel entfernen
-function removeFromCart(name) {
-    updateQuantity(name, 0);
+function removeFromCart(id) {
+    updateQuantity(id, 0);
 }
 
 // Warenkorb anzeigen
@@ -117,23 +117,22 @@ function createCartTable(cart) {
         </tr>`;
 
     Object.keys(cart).forEach(key => {
-        const tea = teas.find(t => t.name === key);
-        if (!tea) return; // Wenn der Artikel nicht gefunden wird, überspringen
-        const netto = tea.preis * cart[key];
+        const tea = teas.find(t => t.id === parseInt(key));
+        if (!tea) return;
+        const netto = tea.preis * cart[key].quantity;
         const mwSt = netto * (tea.mehrwertsteuer / 100);
         totalNetto += netto;
         totalMwSt += mwSt;
 
         tableHtml += `
             <tr>
-                <td>${key}</td>
+                <td>${cart[key].name}</td>
                 <td>
-                    <input type="number" value="${cart[key]}" min="1" onchange="updateQuantity('${key}', this.value)">
+                    <input type="number" value="${cart[key].quantity}" min="1" onchange="updateQuantity('${key}', this.value)">
                 </td>
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
-                <td><button data-id="${tea.id}" onclick="removeFromCart('${key}')">-</button></td>
+                <td><button onclick="removeFromCart('${key}')">-</button></td>
             </tr>`;
-
     });
 
     tableHtml += `
@@ -141,9 +140,7 @@ function createCartTable(cart) {
             <td colspan="3"><strong>Gesamtsumme</strong></td>
             <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
         </tr>
-    </table>
-    <button class="buttonEckig" id="zurKassa">zur Kassa</button>
-    `;
+    </table>`;
 
     return tableHtml;
 }
@@ -154,13 +151,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayTeas();
     displayCart();
 });
-
-
-//fadout für Meldungen
-$(document).ready(function () {
-    // Select all elements with the class 'message'
-    $('.message.success').delay(5000).fadeOut(1000, function () {
-        $(this).remove();
-    });
-});
-

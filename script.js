@@ -28,12 +28,20 @@ $(document).ready(function () {
     });
 
     // SCROLL TO
-    $("nav .anker").click(function () {
-        var anker = $(this).attr('href');
-        $('html, body').animate({
-            scrollTop: $(anker).offset().top - 120
-        }, 500);
+    $("nav .anker").click(function (e) {
+        // Extrahiere nur den Anker-Teil der URL
+        var anker = $(this).attr('href').split('#')[1];
+
+        // Stelle sicher, dass das Ziel-Element existiert
+        if ($('#' + anker).length) {
+            $('html, body').animate({
+                scrollTop: $('#' + anker).offset().top - 120
+            }, 500);
+        } else {
+            console.error('Element mit ID ' + anker + ' nicht gefunden.');
+        }
     });
+
 
     //Checkout
     $('#zurKassa').click(function () {
@@ -56,7 +64,7 @@ $(document).ready(function () {
     }
 
     // Event-Handler für das Klicken auf einen Tab
-    $('.mein_konto_wrapper nav a').click(function (e) {        
+    $('.mein_konto_wrapper nav a').click(function (e) {
         var anker = $(this).attr('href');
         activateTab(anker, true);
     });
@@ -64,6 +72,15 @@ $(document).ready(function () {
     // Prüfe beim Laden der Seite, ob ein Hash in der URL vorhanden ist
     var urlHash = window.location.hash;
     if (urlHash) {
-        activateTab(urlHash, false);
+        switch (urlHash) {
+            case '#teesorten':
+                $('html, body').animate({
+                    scrollTop: $(urlHash).offset().top - 120
+                }, 500);
+                break;
+            default:
+                activateTab(urlHash, false);
+                break;
+        }
     }
 });

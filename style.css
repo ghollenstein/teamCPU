@@ -145,6 +145,7 @@ header {
     height: 30px;
     margin: auto;
     display: block;
+    cursor: pointer;
 }
 
 #warenkorb th {

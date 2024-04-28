@@ -67,7 +67,7 @@ $controller->handleActions();
                 <nav>
                     <ul class="nav_links">
                         <li><a href="./">Home</a></li>
-                        <li><a href="./#teesorten" class="anker">Teesorten</a></li>
+                        <li><a href="index.php#teesorten" class="anker">Teesorten</a></li>
                         <li><a href="index.php?page=kontakt">Kontakt</a></li>
                         <li><a href="index.php?page=impressum">Impressum</a></li>
                     </ul>
