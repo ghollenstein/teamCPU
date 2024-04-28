@@ -12,10 +12,19 @@ class Database
     // Constructor is private to prevent initiating the class directly
     private function __construct()
     {
-        $this->mysqli = new mysqli($this->host, $this->user, $this->pass, $this->db);
+        // Initially connect without specifying the database to check its existence
+        $this->mysqli = new mysqli($this->host, $this->user, $this->pass);
 
+        // Check for connection errors (note that mysqli connects even if the database doesn't exist)
         if ($this->mysqli->connect_error) {
-            die('Connection failed: ' . $this->mysqli->connect_error);
+            throw new Exception('Connection failed: ' . $this->mysqli->connect_error);
+        }
+
+        // Check if the specified database exists
+        try {
+            $dbExists = $this->mysqli->select_db($this->db);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
 
         // Set the charset to ensure proper encoding
@@ -42,9 +51,11 @@ class Database
         return $this->mysqli;
     }
 
-    // Close the connection when the object is destroyed
     public function __destruct()
     {
-        $this->mysqli->close();
+        // Close the connection if it exists and is still open
+        if ($this->mysqli && $this->mysqli->connect_errno === 0) {
+            $this->mysqli->close();
+        }
     }
 }
