@@ -57,7 +57,7 @@ $(document).ready(function () {
         }).append($('<input>', {
             'type': 'hidden',
             'name': 'action',
-            'value': 'processCheckout' // Die Aktion, die das Backend erwartet für Checkout
+            'value': 'showCheckout' // Die Aktion, die das Backend erwartet für Checkout
         })).append($('<input>', {
             'type': 'hidden',
             'name': 'cartData',
