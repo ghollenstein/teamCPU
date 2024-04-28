@@ -1,6 +1,9 @@
 <?php
 require_once '../class/autoload.php';
 
+$exceptionHandler = new ExceptionHandler();
+$exceptionHandler->register();
+
 $dbInstance = Database::getInstance();
 $conn = $dbInstance->getConnection();
 $modelDir = "./models/";

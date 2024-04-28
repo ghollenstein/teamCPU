@@ -4,7 +4,7 @@ $controller = new Controller();
 ?>
 <section class="teesorten">
     <h1>Mein Konto</h1>
-    <?php    
+    <?php
     if ($controller->login->isUserLoggedIn() == true) :
         $userData = $controller->account->getUserData()[0];
     ?>

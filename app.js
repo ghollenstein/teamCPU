@@ -71,26 +71,65 @@ function displayTeas() {
 // Hinzufügen zum Warenkorb
 function addToCart(id, name, quantity) {
     const cart = getCart();
-    if (cart[id]) {
-        cart[id].quantity += quantity;
-    } else {
-        cart[id] = { name: name, quantity: quantity };
+    const tea = teas.find(t => t.id === parseInt(id)); // Finde den entsprechenden Tee anhand der ID
+
+    if (!tea) {
+        alert('Tee nicht gefunden!');
+        return;
     }
+
+    if (cart[id]) {
+        // Berechne die neue Gesamtmenge unter Berücksichtigung der bereits im Warenkorb befindlichen Menge
+        let newQuantity = cart[id].quantity + quantity;
+
+        // Überprüfe, ob die neue Menge den Lagerstand überschreitet
+        if (newQuantity > tea.lagerstand) {
+            alert('Die hinzugefügte Menge zusammen mit der bereits im Warenkorb befindlichen Menge überschreitet den Lagerstand von ' + tea.lagerstand + ' Einheiten. Die Menge wird auf den maximalen Lagerstand gesetzt.');
+            cart[id].quantity = tea.lagerstand; // Setze die Menge auf den maximal verfügbaren Lagerstand
+        } else {
+            cart[id].quantity = newQuantity; // Aktualisiere die Menge im Warenkorb
+        }
+    } else {
+        // Wenn der Artikel noch nicht im Warenkorb ist, überprüfe die Menge im Vergleich zum Lagerstand
+        if (quantity > tea.lagerstand) {
+            alert('Die gewünschte Menge überschreitet den verfügbaren Lagerstand von ' + tea.lagerstand + ' Einheiten. Die Menge wird auf den maximalen Lagerstand gesetzt.');
+            cart[id] = { name: name, quantity: tea.lagerstand }; // Setze die Menge auf den maximalen Lagerstand
+        } else {
+            cart[id] = { name: name, quantity: quantity }; // Füge den neuen Artikel zum Warenkorb hinzu
+        }
+    }
+
     saveCart(cart);
     displayCart();
 }
 
+
+
 // Menge aktualisieren
 function updateQuantity(id, quantity) {
     const cart = getCart();
-    if (quantity > 0) {
-        cart[id].quantity = quantity;
-    } else {
-        delete cart[id];
+    const tea = teas.find(t => t.id === parseInt(id)); // Finde den Tee basierend auf der ID
+
+    if (!tea) {
+        alert('Tee nicht gefunden!');
+        return;
     }
+
+    if (quantity > 0) {
+        if (quantity <= tea.lagerstand) {
+            cart[id].quantity = quantity;
+        } else {
+            alert('Die gewünschte Menge überschreitet den verfügbaren Lagerstand von ' + tea.lagerstand + ' Einheiten.');
+            cart[id].quantity = tea.lagerstand;
+        }
+    } else {
+        delete cart[id]; // Artikel aus dem Warenkorb entfernen, wenn die Menge 0 oder weniger ist
+    }
+
     saveCart(cart);
     displayCart();
 }
+
 
 // Artikel entfernen
 function removeFromCart(id) {
@@ -128,7 +167,7 @@ function createCartTable(cart) {
             <tr>
                 <td>${cart[key].name}</td>
                 <td>
-                    <input type="number" value="${cart[key].quantity}" min="1" onchange="updateQuantity('${key}', this.value)">
+                    <input type="number" value="${cart[key].quantity}" min="1" max="${tea.lagerstand}" onchange="updateQuantity('${key}', this.value)">
                 </td>
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
                 <td><button onclick="removeFromCart('${key}')">-</button></td>

@@ -44,9 +44,29 @@ $(document).ready(function () {
 
 
     //Checkout
-    $('#zurKassa').click(function () {
-        // Leite den Benutzer zur Checkout-Seite um
-        window.location.href = 'index.php?page=checkout';
+    $('#zurKassa').click(function (e) {
+        e.preventDefault(); // Verhindere das Standardverhalten des Browsers
+
+        // Daten aus dem Local Storage holen
+        var cartData = localStorage.getItem('warenkorb');
+
+        // Dynamisch ein Formular erstellen
+        var form = $('<form>', {
+            'action': 'index.php?page=checkout', // Ziel-URL
+            'method': 'POST'
+        }).append($('<input>', {
+            'type': 'hidden',
+            'name': 'action',
+            'value': 'processCheckout' // Die Aktion, die das Backend erwartet für Checkout
+        })).append($('<input>', {
+            'type': 'hidden',
+            'name': 'cartData',
+            'value': cartData // Die Daten aus dem Local Storage als Wert
+        }));
+
+        // Füge das Formular zum Body hinzu und reiche es ein
+        $(document.body).append(form);
+        form.submit();
     });
 
     // Funktion zum Aktivieren eines Tabs
