@@ -35,21 +35,36 @@ $(document).ready(function () {
         }, 500);
     });
 
-    // MEIN KONTO
-    $('.mein_konto_wrapper nav a').click(function () {
-        var anker = $(this).attr('href');
-
-        $('.mein_konto_wrapper nav a').removeClass('btn_active');
-        $(this).addClass('btn_active');
-
-        if ($(anker + "_content").is(":hidden")) {
-            $('.meinkonto_content_wrapper .meinkonto_list_element').slideUp();
-            $(anker + "_content").slideDown();
-        }
-    });
     //Checkout
     $('#zurKassa').click(function () {
         // Leite den Benutzer zur Checkout-Seite um
         window.location.href = 'index.php?page=checkout';
     });
+
+    // Funktion zum Aktivieren eines Tabs
+    function activateTab(anker, animate) {
+        var $tab = $('.mein_konto_wrapper nav a[href="' + anker + '"]');
+        var $content = $(anker + "_content");
+
+        // Entferne die aktive Klasse von allen Tabs und füge sie dem ausgewählten Tab hinzu
+        $('.mein_konto_wrapper nav a').removeClass('btn_active');
+        $tab.addClass('btn_active');
+
+        // Schließe alle Inhalte und öffne den entsprechenden Inhalt
+        $('.meinkonto_content_wrapper .meinkonto_list_element').stop(true, true).slideUp(animate ? 400 : 0);
+        $content.stop(true, true).slideDown(animate ? 400 : 0);
+    }
+
+    // Event-Handler für das Klicken auf einen Tab
+    $('.mein_konto_wrapper nav a').click(function (e) {
+        e.preventDefault();  // Verhindere das Standardverhalten des Browsers
+        var anker = $(this).attr('href');
+        activateTab(anker, true);
+    });
+
+    // Prüfe beim Laden der Seite, ob ein Hash in der URL vorhanden ist
+    var urlHash = window.location.hash;
+    if (urlHash) {
+        activateTab(urlHash, false);
+    }
 });
