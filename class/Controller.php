@@ -10,6 +10,8 @@ class Controller
 
     public function __construct($debug = false)
     {
+        $exceptionHandler = new ExceptionHandler();
+        $exceptionHandler->register();
         $this->debug = $debug;
         $this->initParams();
         $this->session = $this->initSession();

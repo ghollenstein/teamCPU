@@ -148,11 +148,11 @@ $controller = new Controller();
                 <form method="post" class="konto_form">
                     <p>
                         <label for="username">E-Mail-Adresse&nbsp;<span class="required">*</span></label>
-                        <input type="text" name="username" id="username" autocomplete="username" value="<?php $controller->getPostVar("username") ?>">
+                        <input required type="text" name="username" id="username" autocomplete="username" value="<?php $controller->getPostVar("username") ?>">
                     </p>
                     <p>
                         <label for="password">Passwort&nbsp;<span class="required">*</span></label>
-                        <span><input type="password" name="password" id="password" autocomplete="current-password"></span>
+                        <span><input required type="password" name="password" id="password" autocomplete="current-password"></span>
                     </p>
                     <button class="cta" type="submit">Annmelden</button>
                     <input type="hidden" name="action" value="login">

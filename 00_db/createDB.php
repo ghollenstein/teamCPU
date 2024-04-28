@@ -1,5 +1,8 @@
 <?php
-require_once '../class/Database.php';
+require_once '../class/autoload.php';
+
+$exceptionHandler = new ExceptionHandler();
+$exceptionHandler->register();
 
 // Path to the SQL file
 $sqlFilePath = 'datenmodell.sql';

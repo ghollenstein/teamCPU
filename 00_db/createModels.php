@@ -1,5 +1,5 @@
 <?php
-require_once '../class/Database.php';
+require_once '../class/autoload.php';
 
 $dbInstance = Database::getInstance();
 $conn = $dbInstance->getConnection();
