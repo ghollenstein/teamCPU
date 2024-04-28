@@ -67,6 +67,12 @@ class Order
                     throw new Exception("Failed to add order items");
                 }
 
+                //reduce stock
+                $this->productModel->stock = $this->productModel->stock - $this->orderItemModel->quantity;
+                if ($this->productModel->update() === 0) {  // Update method must handle total price updates
+                    throw new Exception("Failed to update the stock quantity");
+                }
+
                 $totalPrice += $this->orderItemModel->price * $this->orderItemModel->quantity;
             }
 

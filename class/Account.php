@@ -122,7 +122,7 @@ class Account
         inner join order_items oi on oi.order_id =o.order_id 
         left join products p on p.product_id =oi.product_id  
         where o.user_id =? and o.lockstate =0
-        order by o.order_id, oi.product_id
+        order by o.order_id desc, oi.product_id
         ";
 
         return $db->executeSQL($sql, [$userId], 'i', true);
