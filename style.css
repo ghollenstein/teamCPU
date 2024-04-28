@@ -15,12 +15,13 @@ a {
     color: #798265;
 }
 
-hr{
-  color:#DDD8BB;
-  box-shadow:1px 1px 6px rgba(0,0,0,0.2)
+hr {
+    color: #DDD8BB;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2)
 }
 
-h2, h1 {
+h2,
+h1 {
     color: #798265;
 }
 
@@ -45,7 +46,7 @@ header {
     left: 0;
     right: 0;
     background-color: #fff;
-    box-shadow: 1px 1px 6px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
     z-index: 100;
 }
 
@@ -66,7 +67,8 @@ header {
     display: flex;
 }
 
-.top_nav_wrapper .meinkonto, .top_nav_wrapper .warenkorb {
+.top_nav_wrapper .meinkonto,
+.top_nav_wrapper .warenkorb {
     padding: 0 10px;
     text-align: center;
 }
@@ -76,11 +78,13 @@ header {
     font-size: 25px;
 }
 
-.top_nav_wrapper i, .top_nav_wrapper em {
+.top_nav_wrapper i,
+.top_nav_wrapper em {
     transition: 0.3s ease;
 }
 
-.top_nav_wrapper a:hover i, .top_nav_wrapper a:hover em {
+.top_nav_wrapper a:hover i,
+.top_nav_wrapper a:hover em {
     color: #202021;
 }
 
@@ -96,7 +100,7 @@ header {
     right: 0;
     background-color: #f8f9fa;
     padding: 0;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     border-radius: 0;
     top: 88px;
     height: 100vh;
@@ -157,7 +161,7 @@ header {
     text-align: left;
 }
 
-.cart_sum {
+#warenkorb .cart_sum {
     top: 15px;
     position: relative;
 }
@@ -203,8 +207,9 @@ header nav a:hover {
     padding: 10px;
     box-sizing: border-box;
 }
-.hand{
-  cursor:pointer;
+
+.hand {
+    cursor: pointer;
 }
 
 /* BURGER */
@@ -218,6 +223,7 @@ header nav a:hover {
     padding: 0;
     border: 0;
 }
+
 .nav-opener::before {
     top: 0;
 }
@@ -225,10 +231,15 @@ header nav a:hover {
 .nav-opener:after {
     bottom: 0;
 }
-.nav-opener:before, .nav-opener:after {
+
+.nav-opener:before,
+.nav-opener:after {
     content: "";
 }
-.nav-opener:before, .nav-opener:after, .nav-opener span {
+
+.nav-opener:before,
+.nav-opener:after,
+.nav-opener span {
     background: #798265;
     position: absolute;
     left: 0;
@@ -236,17 +247,22 @@ header nav a:hover {
     height: 2px;
     transition: 0.3s all;
 }
+
 .nav-active .nav-opener:before {
     transform: rotate(45deg);
 }
+
 .nav-active .nav-opener:after {
     transform: rotate(-45deg);
     bottom: auto;
 }
+
 .nav-active .nav-opener span {
     opacity: 0;
 }
-.nav-active .nav-opener:before, .nav-active .nav-opener:after {
+
+.nav-active .nav-opener:before,
+.nav-active .nav-opener:after {
     content: "";
     top: 50%;
     background-color: #000;
@@ -313,12 +329,14 @@ header nav a:hover {
     text-align: center;
 }
 
-.usp strong, .usp h2 {
+.usp strong,
+.usp h2 {
     color: #202021;
     font-size: 15px;
     margin: 0 0 15px;
-    display:block;
+    display: block;
 }
+
 .usp p {
     color: rgba(32, 32, 33, 0.5);
     font-size: 13px;
@@ -349,14 +367,14 @@ header nav a:hover {
 
 #teelist li {
     width: 100%;
-    box-shadow: 1px 1px 6px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
     margin: 5px;
     border-radius: 4px;
     transition: 0.3s ease;
 }
 
 #teelist li:hover {
-  transform: scale(1.03);
+    transform: scale(1.03);
 }
 
 #teelist a {
@@ -367,7 +385,7 @@ header nav a:hover {
 
 #teelist a:hover {
     color: #020304;
-    text-decoration:underline;
+    text-decoration: underline;
 }
 
 .product_inner {
@@ -398,9 +416,12 @@ header nav a:hover {
     min-height: 200px;
 }
 
-#teelist button, .buttonEckig, .cta {
+#teelist button,
+.buttonEckig,
+.cta,
+.checkout_order_table button {
     background-color: #798265;
-    border:1px solid #798265;
+    border: 1px solid #798265;
     color: #fff;
     font-weight: normal;
     box-shadow: none;
@@ -412,7 +433,22 @@ header nav a:hover {
     cursor: pointer;
 }
 
-#teelist button:hover, .buttonEckig:hover, .cta:hover {
+.checkout_order_table button {
+    margin: 0;
+    text-align: center;
+}
+
+.checkout_order_table .delButton {
+    text-align: center;
+}
+
+.checkout_order_table input {
+    font-size: 1.1em
+}
+
+#teelist button:hover,
+.buttonEckig:hover,
+.cta:hover {
     background-color: #fff;
     color: #798265;
 }
@@ -426,7 +462,7 @@ footer {
 }
 
 .footer_adresse {
-  padding-top:15px;
+    padding-top: 15px;
 }
 
 footer p {
@@ -487,7 +523,8 @@ footer hr {
 }
 
 /* FORM */
-.kontakt_wrapper form input, .kontakt_wrapper form textarea {
+.kontakt_wrapper form input,
+.kontakt_wrapper form textarea {
     border: 1px solid #798265;
     padding: 10px;
     border-radius: 7px;
@@ -513,8 +550,12 @@ footer hr {
     width: 100%;
 }
 
-.kontakt_wrapper .left{
-  font-size:0.8em
+.kontakt_wrapper .left {
+    font-size: 0.8em
+}
+
+.right {
+    text-align: right !important;
 }
 
 /* meinkonto */
@@ -557,7 +598,8 @@ form.konto_form {
     font-size: 13px;
 }
 
-.mein_konto_wrapper ul, .meinkonto_content_wrapper ol {
+.mein_konto_wrapper ul,
+.meinkonto_content_wrapper ol {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -656,7 +698,8 @@ form.konto_form {
     padding: 5px;
 }
 
-.checkout_order_table td, .checkout_order_table th {
+.checkout_order_table td,
+.checkout_order_table th {
     border: 1px solid #cfc8d8;
     padding: 5px;
     text-align: left;
@@ -683,17 +726,21 @@ form.konto_form {
     #teelist li {
         width: calc(50% - 10px);
     }
+
     .usp li {
         width: 25%;
     }
+
     footer label {
         max-width: 100%;
     }
+
     .kontakt_wrapper {
         display: flex;
         flex-wrap: nowrap;
         justify-content: center;
     }
+
     .kontakt_wrapper .flex {
         padding: 15px;
     }
@@ -711,9 +758,11 @@ form.konto_form {
     .register_wrapper {
         flex-wrap: nowrap;
     }
+
     .register_wrapper .flex {
         width: 50%;
     }
+
     section.usp {
         margin: 80px auto 0;
     }
@@ -721,47 +770,61 @@ form.konto_form {
     #teelist li {
         width: calc(25% - 10px);
     }
+
     #teelist img {
         height: 10vw;
     }
+
     header .nav_inner {
         display: block !important;
     }
+
     .nav-opener {
         display: none;
     }
+
     header .nav_inner {
         position: relative;
         width: auto;
     }
+
     .nav_links li {
         display: inline-block
     }
+
     header nav {
         border: none;
     }
+
     .nav_wrapper .flex:first-child {
         display: none;
     }
+
     .nav_wrapper .flex:nth-child(2) {
         order: 1
-    } 
+    }
+
     .nav_wrapper .flex:nth-child(3) {
         order: 3
-    } 
+    }
+
     .nav_inner {
         order: 2
-    } 
+    }
+
     header nav a {
         padding: 5px 10px;
     }
+
     footer {
         margin-top: 100px;
         padding: 50px 0 0;
     }
+
     .copyright p {
         padding: 40px 0 10px;
     }
+
     .teesorten {
         margin-top: 70px;
     }
@@ -776,22 +839,26 @@ form.konto_form {
     font-family: Arial, sans-serif;
     font-size: 14px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Spezifische Stile für jede Art von Nachricht */
 .message.info {
-    background-color: #31708f; /* Dunkelblau für Information */
+    background-color: #31708f;
+    /* Dunkelblau für Information */
 }
 
 .message.warn {
-    background-color: #ff8c00; /* Dunkelorange für Warnungen */
+    background-color: #ff8c00;
+    /* Dunkelorange für Warnungen */
 }
 
 .message.error {
-    background-color: #d32f2f; /* Dunkelrot für Fehler */
+    background-color: #d32f2f;
+    /* Dunkelrot für Fehler */
 }
 
 .message.success {
-    background-color: #388e3c; /* Dunkelgrün für Erfolg */
+    background-color: #388e3c;
+    /* Dunkelgrün für Erfolg */
 }

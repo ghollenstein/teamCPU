@@ -44,48 +44,8 @@
     </form>
 
     <b>Deine Bestellung</b>
-    <table class="checkout_order_table">
-        <thead>
-            <tr>
-                <th>Produkt</th>
-                <th>Zwischensumme</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    Früchtetee
-                    <strong>× 1</strong>
-                </td>
-                <td>
-                    <span>11,90€</span>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Zwischensumme</th>
-                <td>
-                    <span>11,90€</span>
-                </td>
-            </tr>
-            <tr>
-                <th>Versand</th>
-                <td>
-                    Lieferung: <span>5,90€</span>
-                </td>
-            </tr>
-            <tr>
-                <th>Gesamtsumme</th>
-                <td>
-                    <strong>
-                        <span>17,80€</span>
-                    </strong>
-                    <small>(inkl. <span>2,06€</span> MwSt.)</small>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+    <div id='checkout_warenkorb'></div>
+    
 
     <b>Zahlungsmethode</b>
     <form id="payment-form">

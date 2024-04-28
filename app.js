@@ -140,14 +140,19 @@ function removeFromCart(id) {
 function displayCart() {
     const cart = getCart();
     const cartElement = document.getElementById('warenkorb');
+    const cartElementChekcout = document.getElementById('checkout_warenkorb');
     cartElement.innerHTML = Object.keys(cart).length ? createCartTable(cart) : '<p>Dein Warenkorb ist leer.</p>';
+    cartElementChekcout.innerHTML = Object.keys(cart).length ? createCartTable(cart, true) : '<p>Dein Warenkorb ist leer.</p>';
 }
 
 // Hilfsfunktion zur Erstellung der Warenkorbtabelle
-function createCartTable(cart) {
-    let totalNetto = 0, totalMwSt = 0;
 
-    let tableHtml = `<table>
+function createCartTable(cart, checkout = false) {
+    let totalNetto = 0, totalMwSt = 0;
+    let versandKosten = 5.90; // Versandkosten als Beispiel
+
+    // Tabelle mit einer bedingten Klasse im Checkout-Fall
+    let tableHtml = `<table${checkout ? ' class="checkout_order_table"' : ''}>
         <tr>
             <th>Artikel</th>
             <th>Menge</th>
@@ -170,19 +175,44 @@ function createCartTable(cart) {
                     <input type="number" value="${cart[key].quantity}" min="1" max="${tea.lagerstand}" onchange="updateQuantity('${key}', this.value)">
                 </td>
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
-                <td><button onclick="removeFromCart('${key}')">-</button></td>
+                <td class="delButton"><button onclick="removeFromCart('${key}')">-</button></td>
             </tr>`;
     });
 
-    tableHtml += `
-        <tr class="cart_sum">
-            <td colspan="3"><strong>Gesamtsumme</strong></td>
-            <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
-        </tr>
-    </table>`;
+    // Berechnungen und zusätzliche Zeilen für Checkout
+    if (checkout) {
+        const gesamtsumme = totalNetto + totalMwSt + versandKosten;
+        tableHtml += `
+            <tr class="cart_sum">
+                <td colspan="3"><strong>Zwischensumme</strong></td>
+                <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
+            </tr>
+            <tr>
+                <td colspan="3">Versandkosten</td>
+                <td class="right">${versandKosten.toFixed(2)}€</td>
+            </tr>            
+            <tr>
+                <td colspan="3"><strong>Gesamtsumme</strong></td>
+                <td class="right"><strong>${gesamtsumme.toFixed(2)}€</strong></td>
+            </tr>
+            <tr>
+                <td colspan="3">enthaltene MwSt.</td>
+                <td class="right">${totalMwSt.toFixed(2)}€</td>
+            </tr>
+           `;
+    } else {
+        tableHtml += `
+            <tr class="cart_sum">
+                <td colspan="3"><strong>Gesamtsumme</strong></td>
+                <td class="right"><strong>${(totalNetto + totalMwSt).toFixed(2)}€</strong></td>
+            </tr>`;
+    }
+
+    tableHtml += '</table>';
 
     return tableHtml;
 }
+
 
 // Event-Listener zum Laden der Teesorten und Initialisierung der Anzeige
 document.addEventListener('DOMContentLoaded', async () => {
