@@ -18,7 +18,7 @@ class Controller
         $this->session = $this->initSession();
         $this->db = Database::getInstance()->getConnection();
         $this->login = new Login($this->db);
-        $this->account = new Account($this->db,$this);
+        $this->account = new Account($this->db, $this);
         $this->order = new Order($this->db, $this);
     }
 
@@ -56,7 +56,8 @@ class Controller
         return $feedback;
     }
 
-    public function getOrderHistory(){
+    public function getOrderHistory()
+    {
         return $this->account->getOrders();
     }
 
@@ -157,10 +158,13 @@ class Controller
         }
     }
 
-    public function getPostVar($name)
+    public function getPostVar($name, $default = "")
     {
+
         if (isset($_POST[$name])) {
             echo htmlspecialchars($_POST[$name]);
+        } else {
+            echo $default;
         }
     }
 }

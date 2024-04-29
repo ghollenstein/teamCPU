@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-define('TEMPLATE_PATH', 'class/DatabaseExample.php');
-define('OUTPUT_PATH', 'class/Database.php');
-define('DB_CREATION_SCRIPT', '00_db/createDB.php');
+define('TEMPLATE_PATH', '../class/DatabaseExample.php');
+define('OUTPUT_PATH', '../class/Database.php');
+define('DB_CREATION_SCRIPT', 'createDB.php');
 define('INSTALL_PASSWORD', 'FH-Wien-TeamCPU'); // Set a secure password
 
 $errorMessage = '';
@@ -28,7 +28,7 @@ if (isset($_POST['password']) && $_POST['password'] === INSTALL_PASSWORD) {
 // Handle logout
 if (isset($_GET['logout'])) {
     session_destroy();
-    header('Location: setup.php');
+    header('Location: index.php');
     exit;
 }
 

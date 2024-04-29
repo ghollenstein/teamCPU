@@ -18,11 +18,11 @@ if (!$controller->login->isUserLoggedIn()) {
             <div class="form_group">
                 <div class="flex">
                     <label for="checkout_billing">Lieferadresse:&nbsp;<span>*</span></label>
-                    <input type="text" name="delivery" id="checkout_billing" value="<?php $controller->getPostVar("delivery") ?>">
+                    <input required type="text" name="delivery" id="checkout_billing" value="<?php $controller->getPostVar("delivery", "1") ?>">
                 </div>
                 <div class="flex">
                     <label for="checkout_billing">Rechnungsadresse&nbsp;<span>*</span></label>
-                    <input type="text" name="billing" id="checkout_billing" value="<?php $controller->getPostVar("billing") ?>">
+                    <input required type="text" name="billing" id="checkout_billing" value="<?php $controller->getPostVar("billing", "1") ?>">
                 </div>
             </div>
         <?php else : ?>
@@ -74,7 +74,7 @@ if (!$controller->login->isUserLoggedIn()) {
         <!-- dynamically rendered -->
 
 
-        <b>Zahlungsmethode</b>
+        <b>Zahlungsmethode</b> (Demodaten: 4242424242424242)
         <div class="form_group">
             <div class="flex">
 
@@ -159,8 +159,22 @@ if (!$controller->login->isUserLoggedIn()) {
             hiddenInput.setAttribute('value', token.id);
             form.appendChild(hiddenInput);
 
-            // Submit the form
-            form.submit();
+
+            // Check if the item exists in localStorage
+            const CART_KEY = 'warenkorb';
+            if (localStorage.getItem(CART_KEY) !== null) {
+                // Item exists, remove it
+                localStorage.removeItem(CART_KEY);
+                // Submit the form
+                form.submit();
+            } else {
+                // Item does not exist, log a message
+                console.info("Item '" + CART_KEY + "' does not exist in localStorage.");
+                alert("es befinden sich keine Artikel im Warenkorb!");
+            }
+
+
+
         }
     </script>
 
