@@ -24,11 +24,12 @@ Kartennummer: 4242424242424242
 3. Datei herunterladen nach C:\xampp\php\ext, unbenennen zu php_xdebug.dll
 4. Datei C:\xampp\php\php.ini folgenden Inhalt hinzufügen
 
-    [PHP]
-    zend_extension = xdebug
+```
+[PHP]
+zend_extension = xdebug
 
-    [XDebug]
-    xdebug.mode = debug
-    xdebug.start_with_request = yes
-
+[XDebug]
+xdebug.mode = debug
+xdebug.start_with_request = yes
+```
     
