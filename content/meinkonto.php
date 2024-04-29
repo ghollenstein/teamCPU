@@ -70,37 +70,14 @@ $addresses = $controller->getAddresses();
                                 echo "<div>";
                                 echo "<span>" . htmlspecialchars($address['name']) . "</span>";
                                 echo "<span>" . htmlspecialchars($address['street']) . "</span>";
-                                echo "<span>" . htmlspecialchars($address['postal_code']) . " " . htmlspecialchars($order['city']) . "</span>";
+                                echo "<span>" . htmlspecialchars($address['postal_code']) . " " . htmlspecialchars($address['city']) . "</span>";
                                 echo '<a href="#' . htmlspecialchars($address['address_id']) . '"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>';
                                 echo "</div>";
                                 echo "</li>";
                             } ?>
 
 
-                            <li>
-                                <div>
-                                    <span>Georg Tobias</span>
-                                    <span>Voll-Zach-Straße 1337</span>
-                                    <span>1234 Musterhausen</span>
-                                    <a href="#edit_adresse=ID"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <span>Georg Tobias</span>
-                                    <span>Voll-Zach-Straße 1337</span>
-                                    <span>1234 Musterhausen</span>
-                                    <a href="#edit_adresse=ID"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <span>Georg Tobias</span>
-                                    <span>Voll-Zach-Straße 1337</span>
-                                    <span>1234 Musterhausen</span>
-                                    <a href="#edit_adresse=ID"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>
-                                </div>
-                            </li>
+                           
                         </ol>
                     </li>
                     <li id="profil_edit_content" style="display:none" class="meinkonto_list_element">
