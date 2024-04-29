@@ -5,6 +5,7 @@ class Account
     protected $userModel;
     protected $addressModel;
     protected $controller;
+    protected $userId = 0;
 
     public function __construct($conn, $controller)
     {
@@ -12,6 +13,7 @@ class Account
         $this->controller = $controller;
         $this->userModel = new Users($conn);
         $this->addressModel = new Addresses($conn);
+        $this->userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
     }
 
     public function registerUser($userData)
@@ -62,10 +64,10 @@ class Account
 
     public function getUserData()
     {
-        $userId = $_SESSION['user_id'];
+
         try {
             // Abfragen der Benutzerdaten basierend auf der user_id
-            $user = $this->userModel->read("user_id = ?", [$userId], "i");
+            $user = $this->userModel->read("user_id = ?", [$this->userId], "i");
             return $user;
         } catch (Exception $e) {
             throw new Exception("Benutzerdaten konnten nicht abgerufen werden: " . $e->getMessage());
@@ -116,7 +118,6 @@ class Account
     public function getOrders()
     {
         $db = new Sql($this->conn);
-        $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
         $sql = "select o.createdDate, o.order_id , o.total_price , o.status,p.name , oi.price as netto, (oi.tax/100+1)*oi.price as brutto, oi.quantity  from orders o
         inner join order_items oi on oi.order_id =o.order_id 
@@ -125,6 +126,21 @@ class Account
         order by o.order_id desc, oi.product_id
         ";
 
-        return $db->executeSQL($sql, [$userId], 'i', true);
+        return $db->executeSQL($sql, [$this->userId], 'i', true);
+    }
+
+    public function getAddresses()
+    {
+        $db = new Sql($this->conn);
+
+        $sql = "select 
+        a.address_id, a.name, a.address_type , a.street, a.city, a.state, 
+        a.postal_code , a.country , a.createdDate , a.modDate  
+        from addresses a 
+        where a.user_id=? and a.lockstate =0
+        order by a.address_id;
+        ";
+
+        return $db->executeSQL($sql, [$this->userId], 'i', true);
     }
 }

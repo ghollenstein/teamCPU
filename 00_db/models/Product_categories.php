@@ -3,6 +3,7 @@ class Product_categories extends BaseModel  {
 protected $conn;
 protected $table_name = "product_categories";
 
+public $product_category_id;
 public $product_id;
 public $category_id;
 public $createdDate;
@@ -17,12 +18,6 @@ public function __construct($conn) {
 
 private function validate() {
     $missingFields = [];
-    if (!isset($this->product_id) || $this->product_id === '') {
-        $missingFields[] = 'product_id';
-    }
-    if (!isset($this->category_id) || $this->category_id === '') {
-        $missingFields[] = 'category_id';
-    }
     if (count($missingFields) > 0) {
         throw new \InvalidArgumentException('Missing required fields: ' . implode(', ', $missingFields));
     }
@@ -35,7 +30,8 @@ public function create() {
     $stmt = $this->conn->prepare($query);
     $stmt->bind_param('ss', $this->product_id, $this->category_id);
     $stmt->execute();
-    return $stmt->affected_rows;
+    $this->product_category_id= $stmt->insert_id;
+    return $stmt->insert_id;
 }
 
 public function readAll() {
@@ -59,19 +55,25 @@ public function read($where = "", $params = [], $types = "") {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+public function get($id=0) {
+    $result = $this->read("product_category_id=?", [$id], 'i');
+    if(isset($result[0])) $this->mapData($result[0]);
+    return $result;
+}
+
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET product_id = ?, category_id = ?, modDate = NOW() WHERE category_id = ?";
+    $query = "UPDATE $this->table_name SET product_id = ?, category_id = ?, modDate = NOW() WHERE product_category_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sss', $this->product_id, $this->category_id, $this->category_id);
+    $stmt->bind_param('sss', $this->product_id, $this->category_id, $this->product_category_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }
 
 public function delete() {
-    $query = "DELETE FROM $this->table_name WHERE category_id = ?";
+    $query = "DELETE FROM $this->table_name WHERE product_category_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('s', $this->category_id);
+    $stmt->bind_param('s', $this->product_category_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

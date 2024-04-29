@@ -5,6 +5,7 @@ protected $table_name = "addresses";
 
 public $address_id;
 public $user_id;
+public $name;
 public $address_type;
 public $street;
 public $city;
@@ -46,11 +47,12 @@ private function validate() {
 
 public function create() {
     $this->validate();
-    $query = "INSERT INTO $this->table_name (user_id, address_type, street, city, state, postal_code, country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO $this->table_name (user_id, name, address_type, street, city, state, postal_code, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssss', $this->user_id, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country);
+    $stmt->bind_param('ssssssss', $this->user_id, $this->name, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country);
     $stmt->execute();
-    return $stmt->affected_rows;
+    $this->address_id= $stmt->insert_id;
+    return $stmt->insert_id;
 }
 
 public function readAll() {
@@ -74,11 +76,17 @@ public function read($where = "", $params = [], $types = "") {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+public function get($id=0) {
+    $result = $this->read("address_id=?", [$id], 'i');
+    if(isset($result[0])) $this->mapData($result[0]);
+    return $result;
+}
+
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET user_id = ?, address_type = ?, street = ?, city = ?, state = ?, postal_code = ?, country = ?, modDate = NOW() WHERE address_id = ?";
+    $query = "UPDATE $this->table_name SET user_id = ?, name = ?, address_type = ?, street = ?, city = ?, state = ?, postal_code = ?, country = ?, modDate = NOW() WHERE address_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssssssss', $this->user_id, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country, $this->address_id);
+    $stmt->bind_param('sssssssss', $this->user_id, $this->name, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country, $this->address_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

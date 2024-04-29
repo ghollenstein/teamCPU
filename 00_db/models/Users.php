@@ -38,7 +38,8 @@ public function create() {
     $stmt = $this->conn->prepare($query);
     $stmt->bind_param('ssss', $this->firstname, $this->lastname, $this->password, $this->email);
     $stmt->execute();
-    return $stmt->affected_rows;
+    $this->user_id= $stmt->insert_id;
+    return $stmt->insert_id;
 }
 
 public function readAll() {
@@ -60,6 +61,12 @@ public function read($where = "", $params = [], $types = "") {
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+public function get($id=0) {
+    $result = $this->read("user_id=?", [$id], 'i');
+    if(isset($result[0])) $this->mapData($result[0]);
+    return $result;
 }
 
 public function update() {

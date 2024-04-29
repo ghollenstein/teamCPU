@@ -71,7 +71,8 @@ foreach ($tables as $table) {
     }, $nonAutoIncrementFields);
     $classContent .= "    \$stmt->bind_param('" . str_repeat("s", count($nonAutoIncrementFields)) . "', " . implode(', ', $fieldValues) . ");\n";
     $classContent .= "    \$stmt->execute();\n";
-    $classContent .= "    return \$stmt->affected_rows;\n";
+    $classContent .= "    \$this->$primaryKey= \$stmt->insert_id;\n";
+    $classContent .= "    return \$stmt->insert_id;\n";
     $classContent .= "}\n\n";
 
     // Read
@@ -96,8 +97,14 @@ foreach ($tables as $table) {
     $classContent .= "    \$result = \$stmt->get_result();\n";
     $classContent .= "    return \$result->fetch_all(MYSQLI_ASSOC);\n";
     $classContent .= "}\n\n";
+    
+    // get
+    $classContent .= "public function get(\$id=0) {\n";
+    $classContent .= "    \$result = \$this->read(\"$primaryKey=?\", [\$id], 'i');\n";
+    $classContent .= "    if(isset(\$result[0])) \$this->mapData(\$result[0]);\n";
+    $classContent .= "    return \$result;\n";
+    $classContent .= "}\n\n";
 
-    // Update
     // Update
     $classContent .= "public function update() {\n";
     $classContent .= "    \$this->validate();\n";

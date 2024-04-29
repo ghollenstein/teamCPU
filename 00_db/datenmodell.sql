@@ -47,6 +47,7 @@ CREATE TABLE products (
 );
 
 CREATE TABLE product_categories (
+    product_category_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
     category_id INT,
     createdDate DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -54,7 +55,6 @@ CREATE TABLE product_categories (
     modDate DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     modUser INT not null default 0,
     lockstate int default 0,
-    PRIMARY KEY (product_id, category_id),
     FOREIGN KEY (product_id) REFERENCES products (product_id),
     FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
@@ -62,6 +62,7 @@ CREATE TABLE product_categories (
 CREATE TABLE addresses (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
+    name varchar(255),
     address_type varchar(255) not null,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
@@ -95,6 +96,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_items (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
     product_id INT,
     quantity INT,
@@ -105,7 +107,6 @@ CREATE TABLE order_items (
     modDate DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     modUser INT not null default 0,
     lockstate int default 0,
-    PRIMARY KEY (order_id, product_id),
     FOREIGN KEY (order_id) REFERENCES orders (order_id),
     FOREIGN KEY (product_id) REFERENCES products (product_id)
 );

@@ -60,6 +60,10 @@ class Controller
     {
         return $this->account->getOrders();
     }
+    public function getAddresses()
+    {
+        return $this->account->getAddresses();
+    }
 
     public function handleActions()
     {

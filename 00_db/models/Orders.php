@@ -34,7 +34,8 @@ public function create() {
     $stmt = $this->conn->prepare($query);
     $stmt->bind_param('ssssss', $this->address_id_delivery, $this->address_id_billing, $this->user_id, $this->order_date, $this->total_price, $this->status);
     $stmt->execute();
-    return $stmt->affected_rows;
+    $this->order_id= $stmt->insert_id;
+    return $stmt->insert_id;
 }
 
 public function readAll() {
@@ -56,6 +57,12 @@ public function read($where = "", $params = [], $types = "") {
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+public function get($id=0) {
+    $result = $this->read("order_id=?", [$id], 'i');
+    if(isset($result[0])) $this->mapData($result[0]);
+    return $result;
 }
 
 public function update() {
