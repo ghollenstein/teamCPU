@@ -58,14 +58,14 @@ function formatAddress($address)
         ?>
 
             <b>Versand & Rechnungsdaten</b>
-            
+
             <div class="form_group">
                 <div class="flex">
                     <label for="checkout_delivery">Lieferadresse&nbsp;<span>*</span></label>
                     <select required name="delivery" id="checkout_delivery" onchange="updateAddressDisplay(this, '#delivery_address_display')">
                         <?php foreach ($addresses as $address) : ?>
                             <option value="<?= htmlspecialchars($address['address_id']) ?>" data-address="<?= formatAddress($address) ?>">
-                                <?= htmlspecialchars($address['street'] . ', ' . $address['city']) ?>
+                                <?= htmlspecialchars($address['name']) . ':' . htmlspecialchars($address['street'] . ', ' . $address['city']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -145,9 +145,9 @@ function formatAddress($address)
         <!-- dynamically rendered -->
 
 
-        <b>Zahlungsmethode</b> 
+        <b>Zahlungsmethode</b>
         <div class="form-group">
-            <div class="flex " >
+            <div class="flex ">
 
                 <label for="card-element">
                     Kredit- oder Debitkarte - (Demodaten: 4242424242424242 | 10/25 | 123 | 68500)
@@ -164,7 +164,8 @@ function formatAddress($address)
         <input id="cartData" type="hidden" name="cartData" value="">
         <input name="agb" id="agb" type="checkbox" value="1" required="">
         <label for="agb">Ich bin mit der Verarbeitung meiner angegebenen Daten einverstanden und akzeptiere die AGBs.</label>
-        <button class="cta">Kostenpflichtig bestellen</button>
+        <button class="cta"> <i class="fa fa-money" aria-hidden="true"></i>
+            Kostenpflichtig bestellen</button>
     </form>
 
     <script>

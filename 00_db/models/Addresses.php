@@ -27,9 +27,6 @@ public function __construct($conn) {
 
 private function validate() {
     $missingFields = [];
-    if (!isset($this->address_type) || $this->address_type === '') {
-        $missingFields[] = 'address_type';
-    }
     if (!isset($this->street) || $this->street === '') {
         $missingFields[] = 'street';
     }
@@ -87,9 +84,11 @@ public function get($id=0) {
 
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET user_id = ?, name = ?, firstname = ?, lastname = ?, company = ?, address_type = ?, street = ?, city = ?, state = ?, postal_code = ?, country = ?, modDate = NOW() WHERE address_id = ?";
+$lockstate = $this->lockstate ? $this->lockstate : 0;
+$modUser = $this->modUser ? $this->modUser : 0;
+    $query = "UPDATE $this->table_name SET user_id = ?, name = ?, firstname = ?, lastname = ?, company = ?, address_type = ?, street = ?, city = ?, state = ?, postal_code = ?, country = ?, modDate = NOW(), lockstate = ?, modUser = ? WHERE address_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('ssssssssssss', $this->user_id, $this->name, $this->firstname, $this->lastname, $this->company, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country, $this->address_id);
+    $stmt->bind_param('ssssssssssssss', $this->user_id, $this->name, $this->firstname, $this->lastname, $this->company, $this->address_type, $this->street, $this->city, $this->state, $this->postal_code, $this->country, $lockstate , $modUser, $this->address_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

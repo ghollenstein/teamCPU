@@ -143,5 +143,17 @@ class Account
         return $db->executeSQL($sql, [$this->userId], 'i', true);
     }
 
-    
+    public function saveAddress($params)
+    {
+        $this->addressModel->mapData($params['POST']);
+        $this->addressModel->user_id = $this->userId;
+        $this->addressModel->create();
+    }
+
+    public function udpateAddress($params)
+    {
+        $this->addressModel->mapData($params['POST']);
+        $this->addressModel->user_id = $this->userId;
+        $this->addressModel->update();
+    }
 }

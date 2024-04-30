@@ -4,27 +4,73 @@ let teas = [];
 // Local Storage ID
 const CART_KEY = 'warenkorb';
 
-// Asynchrones Laden der Teesorten
-async function loadTeas() {
+
+
+/**
+ * Sends a POST request to a predefined URL with the provided data and handles responses.
+ * 
+ * @param {Object} postData - The data to be sent with the request.
+ * @param {Function} successCallback - The callback function to execute if the request is successful.
+ * @param {Function} errorCallback - The callback function to execute if the request fails.
+ */
+async function postData(postData, successCallback, errorCallback) {
+    const apiURL = 'api/';  // Hardcoded URL for all requests
+
     try {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ entity: 'ShopProducts', action: 'getProducts' })
+            body: JSON.stringify(postData)
         };
-        const response = await fetch('api/', requestOptions);
-        let resJson = await response.json();
+
+        const response = await fetch(apiURL, requestOptions);
+        const resJson = await response.json();
 
         if (resJson.success === true) {
-            teas = resJson.data;
+            successCallback(resJson.data);
         } else {
-            throw new Error(resJson.error);
+            throw new Error(resJson.error || 'Unknown error');
         }
     } catch (error) {
-        console.error('Fehler beim Laden der Teesorten:', error);
-        alert('Fehler beim Laden der Teesorten!')
+        console.error('Error:', error);
+        errorCallback(error);
     }
 }
+
+// Asynchrones Laden der Teesorten
+function handleTeaLoadSuccess(data) {
+    console.log('Teesorten erfolgreich geladen:', data);
+    teas = data;
+}
+function handleTeaLoadError(error) {
+    console.error('Fehler beim Laden der Teesorten:', error);
+    alert('Fehler beim Laden der Teesorten!');
+}
+
+// Asynchrones Laden der Teesorten using the new generic function
+async function loadTeas() {
+    await postData(
+        { entity: 'ShopApi', action: 'getProducts' },
+        handleTeaLoadSuccess,
+        handleTeaLoadError
+    );
+}
+
+// Asynchrones Laden der Teesorten using the new generic function
+async function addressDelete(addressId) {
+    await postData(
+        { entity: 'ShopApi', action: 'addressDelete', addressId: addressId },
+        (data) => {
+            console.log("addressDelete", data);
+            window.location.reload(true);
+        },
+        (e) => {
+            console.error('Fehler beim Löschen der Adresse:', error);
+            alert('Fehler beim Löschen der Adresse');
+        }
+    );
+}
+
 
 // Warenkorb laden
 function getCart() {
@@ -243,3 +289,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayTeas();
     displayCart();
 });
+
+
+

@@ -97,7 +97,7 @@ foreach ($tables as $table) {
     $classContent .= "    \$result = \$stmt->get_result();\n";
     $classContent .= "    return \$result->fetch_all(MYSQLI_ASSOC);\n";
     $classContent .= "}\n\n";
-    
+
     // get
     $classContent .= "public function get(\$id=0) {\n";
     $classContent .= "    \$result = \$this->read(\"$primaryKey=?\", [\$id], 'i');\n";
@@ -108,22 +108,31 @@ foreach ($tables as $table) {
     // Update
     $classContent .= "public function update() {\n";
     $classContent .= "    \$this->validate();\n";
-    // Initialize the array for update assignments to ensure it's always an array
     $updateAssignments = [];
     foreach ($nonAutoIncrementFields as $col) {
-        if ($col['Field'] !== 'modDate') { // Exclude modDate from automatic updates
+        // Update all fields except modDate, lockstate, and modUser
+        if (!in_array($col['Field'], ['modDate', 'lockstate', 'modUser'])) {
             $updateAssignments[] = "{$col['Field']} = ?";
         }
     }
-    $updateAssignments[] = 'modDate = NOW()'; // Add automatic setting of modDate
+    // Now add lockstate and modUser explicitly to ensure they are considered
+    $updateAssignments[] = 'modDate = NOW()'; // Automatic setting of modDate
+    $updateAssignments[] = 'lockstate = ?'; // Include lockstate in the update
+    $updateAssignments[] = 'modUser = ?'; // Include modUser in the update
 
-    // Ensure $fieldValues is initialized as an array
+    // Prepare variables from properties or default values
+    $classContent .= "\$lockstate = \$this->lockstate ? \$this->lockstate : 0;\n";
+    $classContent .= "\$modUser = \$this->modUser ? \$this->modUser : 0;\n";
+
+    // Build field values excluding modDate, but including lockstate and modUser
     $fieldValues = [];
     foreach ($nonAutoIncrementFields as $col) {
-        if ($col['Field'] !== 'modDate') { // Only add if not modDate
+        if (!in_array($col['Field'], ['modDate'])) { // Exclude modDate from binding
             $fieldValues[] = '$this->' . $col['Field'];
         }
     }
+    $fieldValues[] = '$lockstate '; // Include lockstate value
+    $fieldValues[] = '$modUser';   // Include modUser value
 
     $classContent .= "    \$query = \"UPDATE \$this->table_name SET " . implode(', ', $updateAssignments) . " WHERE $primaryKey = ?\";\n";
     $classContent .= "    \$stmt = \$this->conn->prepare(\$query);\n";
@@ -133,6 +142,7 @@ foreach ($tables as $table) {
     $classContent .= "    \$stmt->execute();\n";
     $classContent .= "    return \$stmt->affected_rows;\n";
     $classContent .= "}\n\n";
+
 
 
 

@@ -86,6 +86,21 @@ class Controller
             case 'processCheckout':
                 if ($method === 'POST') $this->handleOrder();
                 break;
+            case 'newAddress':
+                if ($method === 'POST') $this->handleAddress();
+                break;
+        }
+    }
+
+    private function handleAddress()
+    {
+        try {
+            $this->account->saveAddress($this->params);
+            $this->addFeedback("Bestellung erfolgreich erstellt!", "success");
+            header("Location: index.php?page=meinkonto#adresses");
+            exit;
+        } catch (Exception $e) {
+            $this->addFeedback("Fehler: " . $e->getMessage(), "error");
         }
     }
 

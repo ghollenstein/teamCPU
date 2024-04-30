@@ -686,7 +686,8 @@ form.konto_form {
 }
 
 .adresse_list li {
-    width: 50%;
+
+    flex: 0 0 25%;
     margin-bottom: 15px;
 }
 
@@ -928,7 +929,8 @@ input:invalid {
 }
 
 
-#orders_content {
+#orders_content,
+#adresses_content {
     border: 1px solid #cfc8d8;
     padding: 20px;
     margin: 15px 0;
@@ -951,5 +953,63 @@ input:invalid {
     font-weight: bold;
     vertical-align: top;
     background: #bec3b4;
-    background:#DDD8BB
+    background: #DDD8BB
+}
+
+
+/* input form form */
+.form-group {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.form-group label {
+    flex: 1 0 140px;
+    /* Label width */
+    margin-right: 10px;
+    /* Space between label and input */
+}
+
+.form-group input,
+.form-group select,
+.form-group button {
+    flex: 2 1 auto;
+    /* Input expands to take up extra space */
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+        /* Space between label and input on small screens */
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group button {
+        width: 100%;
+        /* Full width inputs and buttons on small screens */
+    }
+}
+
+#adresses_content .form-buttons button {
+    display: inline;
+}
+
+.address-item {
+    background: #efefef;
+    min-width: 84%;
+}
+
+#adresses_content .konto_form {
+    background: #efefef;
 }

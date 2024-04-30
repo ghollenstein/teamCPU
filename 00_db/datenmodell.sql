@@ -66,7 +66,7 @@ CREATE TABLE addresses (
     firstname VARCHAR(255),
     lastname VARCHAR(255),
     company VARCHAR(255),
-    address_type varchar(255) not null,
+    address_type varchar(255),
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     state VARCHAR(255),

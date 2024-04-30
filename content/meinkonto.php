@@ -67,19 +67,77 @@ $addresses = $controller->getAddresses();
                         <ol class="adresse_list">
                             <?php foreach ($addresses['data'] as $address) {
                                 echo "<li>";
-                                echo "<div>";
+                                echo "<div class='address-item'>";
                                 echo "<span><b>" . htmlspecialchars($address['name']) . "</b></span>";
                                 echo "<span>" . htmlspecialchars($address['firstname']) . " " . htmlspecialchars($address['lastname']) . "</span>";
                                 echo "<span>" . htmlspecialchars($address['street']) . "</span>";
                                 echo "<span>" . htmlspecialchars($address['postal_code']) . " " . htmlspecialchars($address['city']) . "</span>";
-                                echo '<a href="#' . htmlspecialchars($address['address_id']) . '"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>';
+                                echo '<a href="#adresses"  onClick="addressDelete(' . htmlspecialchars($address['address_id']) . ')"><i class="fa fa-trash" aria-hidden="true"></i> löschen</a>';
                                 echo "</div>";
                                 echo "</li>";
                             } ?>
 
 
-                           
+
                         </ol>
+                        <div class="form-buttons">
+                            <button type="button" class='buttonEckig' onclick="showForm()"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                neu</button>
+                        </div>
+                        <div class="addressForm">
+                            <form method="post" class="konto_form  hidden">
+                                <div class="form-group">
+                                    <label for="name">Name für die Auswahl*:</label>
+                                    <input type="text" id="name" name="name" required value="<?php $controller->getPostVar("name") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstname">Vorname:</label>
+                                    <input type="text" id="firstname" name="firstname" value="<?php $controller->getPostVar("firstname") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastname">Nachname:</label>
+                                    <input type="text" id="lastname" name="lastname" value="<?php $controller->getPostVar("lastname") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company">Firma:</label>
+                                    <input type="text" id="company" name="company" value="<?php $controller->getPostVar("company") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="street">Strasse*:</label>
+                                    <input type="text" id="street" name="street" required value="<?php $controller->getPostVar("street") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">Ort*:</label>
+                                    <input type="text" id="city" name="city" required value="<?php $controller->getPostVar("city") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postal_code">Postleitzahl*:</label>
+                                    <input type="text" id="postal_code" name="postal_code" required value="<?php $controller->getPostVar("postal_code") ?>"><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Land*:</label>
+                                    <select id="country" name="country" required>
+                                        <option value="AT">Österreich</option>
+                                        <option value="DE">Deutschland</option>
+                                    </select>
+                                </div>
+                                <div class="form-buttons">
+
+                                    <button type="reset" class='buttonEckig' onclick="showForm()"><i class="fa fa-ban" aria-hidden="true"></i>
+                                        abbruch</button>
+                                    <button type="submit" class='buttonEckig'><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                        speichern</button>
+                                    <input type="hidden" name="action" value="newAddress">
+                                </div>
+                            </form>
+                            <script>
+                                function showForm() {
+                                    var form = document.querySelector('.konto_form');
+                                    form.classList.toggle('hidden');
+                                }
+                            </script>
+                        </div>
+
                     </li>
                     <li id="profil_edit_content" style="display:none" class="meinkonto_list_element">
                         <form method="post" class="ajax_call konto_form">

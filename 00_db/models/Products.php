@@ -79,9 +79,11 @@ public function get($id=0) {
 
 public function update() {
     $this->validate();
-    $query = "UPDATE $this->table_name SET name = ?, description = ?, image = ?, tax = ?, price = ?, stock = ?, modDate = NOW() WHERE product_id = ?";
+$lockstate = $this->lockstate ? $this->lockstate : 0;
+$modUser = $this->modUser ? $this->modUser : 0;
+    $query = "UPDATE $this->table_name SET name = ?, description = ?, image = ?, tax = ?, price = ?, stock = ?, modDate = NOW(), lockstate = ?, modUser = ? WHERE product_id = ?";
     $stmt = $this->conn->prepare($query);
-    $stmt->bind_param('sssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock, $this->product_id);
+    $stmt->bind_param('sssssssss', $this->name, $this->description, $this->image, $this->tax, $this->price, $this->stock, $lockstate , $modUser, $this->product_id);
     $stmt->execute();
     return $stmt->affected_rows;
 }

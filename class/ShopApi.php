@@ -1,13 +1,15 @@
 <?php
-class ShopProducts
+class ShopApi
 {
     protected $conn;
     protected $input;
+    protected $user;
 
     public function __construct($conn, $data)
     {
         $this->conn = $conn;
         $this->input = $data;
+        $this->$_SESSION['user_id'];
     }
 
     public function getProducts()
@@ -38,5 +40,12 @@ class ShopProducts
         return $db->convertDbResultToJson($data);
     }
 
-    
+    public function addressDelete($params)
+    {
+        $address = new Addresses($this->conn);
+        $address->get($params['addressId']);
+        $address->lockstate = 1;
+        $address->modUser = $this->user;
+        return $address->update();
+    }
 }
