@@ -8,6 +8,7 @@ class Order
     protected $productModel;
     protected $orderModel;
     protected $orderItemModel;
+    protected $paymentModel;
     protected $userId;
 
     public function __construct($conn)
@@ -18,6 +19,7 @@ class Order
         $this->orderModel = new Orders($this->conn);
         $this->orderItemModel = new Order_items($this->conn);
         $this->productModel = new Products($this->conn);
+        $this->paymentModel = new Payments($this->conn);
         $this->userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
     }
 
@@ -29,11 +31,12 @@ class Order
         $cartData = json_decode(html_entity_decode($cartDataJson), true);
         $deliveryAddressId = $params['POST']['delivery'] ?? null;
         $billingAddressId = $params['POST']['billing'] ?? null;
+        $paymentStatus = $params['POST']['stripeToken'] ?? null;
 
         // Start the transaction
         $this->conn->begin_transaction();
         try {
-
+            //order
             $this->orderModel->address_id_delivery = $deliveryAddressId;
             $this->orderModel->address_id_billing = $billingAddressId;
             $this->orderModel->user_id = $this->userId;
@@ -45,6 +48,18 @@ class Order
                 throw new Exception("Failed to create order");
             }
 
+            //payment
+            $this->paymentModel->order_id = $this->orderModel->order_id;
+            $this->paymentModel->payment_date = date('Y-m-d H:i:s');
+            $this->paymentModel->payment_type = 'CC';
+            $this->paymentModel->payment_status = $paymentStatus;
+            $this->paymentModel->create();
+
+            if (!$this->paymentModel->create()) {
+                throw new Exception("Failed to create payment");
+            }
+
+            //products
             $totalPrice = 0;
             foreach ($cartData as $productId => $details) {
                 //get the product object
