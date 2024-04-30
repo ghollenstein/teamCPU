@@ -732,7 +732,7 @@ form.konto_form {
 }
 
 #payment-form {
-    border: 2px solid #7a8265;
+    background-color: #ededed;
     border-radius: 6px;
     margin: 10px 0 0;
     padding: 10px;
@@ -783,10 +783,6 @@ form.konto_form {
 @media all and (min-width: 991px) {
     .register_wrapper {
         flex-wrap: nowrap;
-    }
-
-    .form_group select {
-        max-width: 100%;
     }
 
     .register_wrapper .flex {
@@ -908,26 +904,23 @@ form.konto_form {
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
 }
 
+
 .checkoutAddress {
-    padding: 15px;
-    margin: 10px 0 15px;
+    padding: 20px 40px;
+
 }
+
+
 
 #checkoutProcess .form_group {
     margin-top: 10px;
 }
 
-.form_group select {
-    max-width: 165px;
-}
-
 #card-element {
-    margin: 15px 0;
+    margin-bottom: 10px;
     padding: 8px 12px;
-    border: 1px solid #798265;
 }
 
 input:invalid {
