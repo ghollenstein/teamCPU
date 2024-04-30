@@ -36,7 +36,7 @@ $addresses = $controller->getAddresses();
                             if ($currentOrderId !== $order['order_id']) {
                                 if ($currentOrderId !== null) {
                                     // Display the total for the previous order
-                                    echo "<tr style='background-color: #f2f2f2; font-weight:bold;'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td>" . number_format($totalBrutto, 2) . " €</td></tr>";
+                                    echo "<tr class='summe'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td class='right'>" . number_format($totalBrutto, 2) . " €</td></tr>";
                                 }
                                 // Reset total and update current order ID
                                 $totalBrutto = 0;
@@ -49,14 +49,14 @@ $addresses = $controller->getAddresses();
                             echo "<td>#" . htmlspecialchars($order['order_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($order['createdDate']) . "</td>";
                             echo "<td>" . htmlspecialchars($order['name']) . "</td>";
-                            echo "<td>" . number_format($order['brutto'], 2) . " €</td>";
-                            echo "<td>" . htmlspecialchars($order['quantity']) . "</td>";
-                            echo "<td>" . number_format($order['quantity'] * $order['brutto'], 2) . " €</td>";
+                            echo "<td class='right'>" . number_format($order['brutto'], 2) . " €</td>";
+                            echo "<td class='right'>" . htmlspecialchars($order['quantity']) . "</td>";
+                            echo "<td class='right'>" . number_format($order['quantity'] * $order['brutto'], 2) . " €</td>";
                             echo "</tr>";
                         }
                         if ($currentOrderId !== null) {
                             // Display the total for the last order
-                            echo "<tr style='background-color: #f2f2f2; font-weight:bold;'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td>" . number_format($totalBrutto, 2) . " €</td></tr>";
+                            echo "<tr class='summe'><td colspan='5'>Gesamt für Bestellung #$currentOrderId</td><td class='right'>" . number_format($totalBrutto, 2) . " €</td></tr>";
                         }
 
                         echo '</tbody>';
@@ -68,7 +68,8 @@ $addresses = $controller->getAddresses();
                             <?php foreach ($addresses['data'] as $address) {
                                 echo "<li>";
                                 echo "<div>";
-                                echo "<span>" . htmlspecialchars($address['name']) . "</span>";
+                                echo "<span><b>" . htmlspecialchars($address['name']) . "</b></span>";
+                                echo "<span>" . htmlspecialchars($address['firstname']) . " " . htmlspecialchars($address['lastname']) . "</span>";
                                 echo "<span>" . htmlspecialchars($address['street']) . "</span>";
                                 echo "<span>" . htmlspecialchars($address['postal_code']) . " " . htmlspecialchars($address['city']) . "</span>";
                                 echo '<a href="#' . htmlspecialchars($address['address_id']) . '"><i class="fa fa-pencil" aria-hidden="true"></i> Bearbeiten</a>';

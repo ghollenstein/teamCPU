@@ -134,8 +134,7 @@ class Account
         $db = new Sql($this->conn);
 
         $sql = "select 
-        a.address_id, a.name, a.address_type , a.street, a.city, a.state, 
-        a.postal_code , a.country , a.createdDate , a.modDate  
+        *
         from addresses a 
         where a.user_id=? and a.lockstate =0
         order by a.address_id;
@@ -143,4 +142,6 @@ class Account
 
         return $db->executeSQL($sql, [$this->userId], 'i', true);
     }
+
+    
 }

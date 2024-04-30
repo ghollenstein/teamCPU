@@ -150,6 +150,12 @@ header {
     margin: auto;
     display: block;
     cursor: pointer;
+    font-size: 1em;
+}
+
+#warenkorb button i {
+    color: #fff;
+    font-size: 1em;
 }
 
 #warenkorb th {
@@ -692,16 +698,22 @@ form.konto_form {
 
 .checkout_order_table {
     width: 100%;
-    border: 1px solid #798265;
     margin: 10px 0;
     border-radius: 4px;
     padding: 5px;
+    background: #fff;
+    border-collapse: collapse;
+    /* Ensures borders between cells are merged */
+    border-spacing: 0;
+    /* Removes space between cells */
+    border: 0;
+    /* Removes the outer border */
 }
 
 .checkout_order_table td,
 .checkout_order_table th {
     border: 1px solid #cfc8d8;
-    padding: 5px;
+    padding: 8px 12px;
     text-align: left;
 }
 
@@ -864,6 +876,66 @@ form.konto_form {
     /* Dunkelgrün für Erfolg */
 }
 
+#card-errors:empty {
+    display: none;
+}
+
 #card-errors {
-    color: #fff;    
+    color: #fff;
+    padding: 8px 12px;
+    margin-bottom: 10px
+}
+
+.whiteBox {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.checkoutAddress {
+    padding: 20px 40px;
+
+}
+
+
+
+#checkoutProcess .form_group {
+    margin-top: 10px;
+}
+
+#card-element {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+}
+
+input:invalid {
+    border: 1px solid red;
+    /* Red border for invalid inputs */
+}
+
+
+#orders_content {
+    border: 1px solid #cfc8d8;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: left;
+    border-radius: 5px;
+}
+
+#orders_content table td,
+#orders_content table th {
+    border: 1px solid #ddd
+}
+
+#orders_content table th {
+    background: #798265;
+    color: #fff
+}
+
+#orders_content tr.summe {
+    color: #4c4e48;
+    font-weight: bold;
+    vertical-align: top;
+    background: #bec3b4;
 }

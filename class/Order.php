@@ -40,19 +40,17 @@ class Order
             $this->orderModel->total_price = 0;  // This will be calculated based on cart items
             $this->orderModel->status = 1;  // Example status
 
-            $orderModelResult = $this->orderModel->create();
-            $this->orderModel->order_id = $this->conn->insert_id;
-
-            if (!$orderModelResult) {
+            if (!$this->orderModel->create()) {
                 throw new Exception("Failed to create order");
             }
 
             $totalPrice = 0;
             foreach ($cartData as $productId => $details) {
-                //read and map the data 
-                $productData = $this->productModel->read("product_id = ?", [$productId], "i");
-                $this->productModel->mapData($productData[0]);
-                if (!$productData) {
+                //get the product object
+                $this->productModel->get($productId);
+
+
+                if (!$this->productModel->product_id) {
                     throw new Exception("Product not found with ID: $productId");
                 }
 
@@ -62,8 +60,7 @@ class Order
                 $this->orderItemModel->price = $this->productModel->price;
                 $this->orderItemModel->tax = $this->productModel->tax;
 
-                $orderItemResult = $this->orderItemModel->create();
-                if (!$orderItemResult) {
+                if (!$this->orderItemModel->create()) {
                     throw new Exception("Failed to add order items");
                 }
 

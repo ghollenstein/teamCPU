@@ -180,7 +180,8 @@ function createCartTable(cart, checkout = false) {
                     <input type="number" value="${cart[key].quantity}" min="1" max="${tea.lagerstand}" onchange="updateQuantity('${key}', this.value)">
                 </td>
                 <td class="right">${(netto + mwSt).toFixed(2)}€ <em>(inkl. MwSt.)</em></td>
-                <td class="delButton"><button onclick="removeFromCart('${key}')">-</button></td>
+                <td class="delButton"><button onclick="removeFromCart('${key}')"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button></td>
             </tr>`;
     });
 

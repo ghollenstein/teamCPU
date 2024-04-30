@@ -5,6 +5,48 @@ if (!$controller->login->isUserLoggedIn()) {
     header("Location: index.php?page=meinkonto");
 }
 
+function formatAddress($address)
+{
+    // Initialize an array to hold parts of the formatted address
+    $formattedAddress = [];
+
+    // Append the name or company if available
+    if (!empty($address['company'])) {
+        $formattedAddress[] = $address['company'];
+    } elseif (!empty($address['firstname']) && !empty($address['lastname'])) {
+        $formattedAddress[] = $address['firstname'] . ' ' . $address['lastname'];
+    } elseif (!empty($address['name'])) {
+        $formattedAddress[] = $address['name'];
+    }
+
+    // Append the street
+    if (!empty($address['street'])) {
+        $formattedAddress[] = $address['street'];
+    }
+
+    // Append the city, state, and postal code in one line if available
+    $cityStatePostal = [];
+    if (!empty($address['postal_code'])) {
+        $cityStatePostal[] = $address['postal_code'];
+    }
+    if (!empty($address['city'])) {
+        $cityStatePostal[] = $address['city'];
+    }
+
+    if (!empty($cityStatePostal)) {
+        $formattedAddress[] = implode(' ', $cityStatePostal);
+    }
+
+    // Append the country
+    if (!empty($address['country'])) {
+        $formattedAddress[] = $address['country'];
+    }
+
+    // Combine all parts into a single string separated by line breaks for HTML display
+    return implode("<br>", $formattedAddress);
+}
+
+
 ?>
 <section id="checkoutProcess" class="teesorten">
     <form id="payment-form" action="index.php?page=checkout" method="post">
@@ -12,19 +54,48 @@ if (!$controller->login->isUserLoggedIn()) {
         <?php
         if ($controller->login->isUserLoggedIn() == true) :
             $userData = $controller->account->getUserData()[0];
+            $addresses = $controller->getAddresses()['data'];
         ?>
 
             <b>Versand & Rechnungsdaten</b>
+            
             <div class="form_group">
                 <div class="flex">
-                    <label for="checkout_billing">Lieferadresse:&nbsp;<span>*</span></label>
-                    <input required type="text" name="delivery" id="checkout_billing" value="<?php $controller->getPostVar("delivery", "1") ?>">
+                    <label for="checkout_delivery">Lieferadresse&nbsp;<span>*</span></label>
+                    <select required name="delivery" id="checkout_delivery" onchange="updateAddressDisplay(this, '#delivery_address_display')">
+                        <?php foreach ($addresses as $address) : ?>
+                            <option value="<?= htmlspecialchars($address['address_id']) ?>" data-address="<?= formatAddress($address) ?>">
+                                <?= htmlspecialchars($address['street'] . ', ' . $address['city']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div id="delivery_address_display" class="checkoutAddress whiteBox"></div> <!-- Display für die gewählte Lieferadresse -->
+
                 </div>
                 <div class="flex">
                     <label for="checkout_billing">Rechnungsadresse&nbsp;<span>*</span></label>
-                    <input required type="text" name="billing" id="checkout_billing" value="<?php $controller->getPostVar("billing", "1") ?>">
+                    <select required name="billing" id="checkout_billing" onchange="updateAddressDisplay(this, '#billing_address_display')">
+                        <?php foreach ($addresses as $address) : ?>
+                            <option value="<?= htmlspecialchars($address['address_id']) ?>" data-address="<?= formatAddress($address) ?>">
+                                <?= htmlspecialchars($address['street'] . ', ' . $address['city']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div id="billing_address_display" class="checkoutAddress whiteBox"></div> <!-- Display für die gewählte Rechnungsadresse -->
                 </div>
             </div>
+            <script>
+                function updateAddressDisplay(selectElement, displayElementSelector) {
+                    var address = selectElement.selectedOptions[0].getAttribute('data-address');
+                    document.querySelector(displayElementSelector).innerHTML = address;
+                }
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateAddressDisplay(document.getElementById('checkout_delivery'), '#delivery_address_display');
+                    updateAddressDisplay(document.getElementById('checkout_billing'), '#billing_address_display');
+                });
+            </script>
+
+
         <?php else : ?>
 
 
@@ -70,18 +141,18 @@ if (!$controller->login->isUserLoggedIn()) {
 
         <?php endif; ?>
         <b>Deine Bestellung</b>
-        <div id='checkout_warenkorb'></div>
+        <div id='checkout_warenkorb' class='whiteBox'></div>
         <!-- dynamically rendered -->
 
 
-        <b>Zahlungsmethode</b> (Demodaten: 4242424242424242)
-        <div class="form_group">
-            <div class="flex">
+        <b>Zahlungsmethode</b> 
+        <div class="form-group">
+            <div class="flex " >
 
                 <label for="card-element">
-                    Kredit- oder Debitkarte
+                    Kredit- oder Debitkarte - (Demodaten: 4242424242424242 | 10/25 | 123 | 68500)
                 </label>
-                <div id="card-element">
+                <div id="card-element" class='whiteBox'>
                     <!-- A Stripe Element will be inserted here. -->
                 </div>
 

@@ -63,6 +63,9 @@ CREATE TABLE addresses (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     name varchar(255),
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    company VARCHAR(255),
     address_type varchar(255) not null,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
@@ -257,6 +260,9 @@ VALUES
 
 INSERT INTO
     fhwien.addresses (
+        name,
+        firstname,
+        lastname,
         user_id,
         address_type,
         street,
@@ -267,6 +273,9 @@ INSERT INTO
     )
 VALUES
     (
+        'Witwe Polde',
+        'Intel',
+        'CPU',
         1,
         'shipping',
         'Mohrenbräustraße 1',
@@ -278,6 +287,9 @@ VALUES
 
 INSERT INTO
     fhwien.addresses (
+        name,
+        firstname,
+        lastname,
         user_id,
         address_type,
         street,
@@ -288,6 +300,9 @@ INSERT INTO
     )
 VALUES
     (
+        'Hauptadresse',
+        'AMD',
+        'CPU',
         1,
         'billing',
         'FH-Wien-Strasse 12',
