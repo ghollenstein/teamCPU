@@ -9,7 +9,7 @@ class ShopApi
     {
         $this->conn = $conn;
         $this->input = $data;
-        $this->$_SESSION['user_id'];
+        $this->user = $_SESSION['user_id'];
     }
 
     public function getProducts()
@@ -46,6 +46,10 @@ class ShopApi
         $address->get($params['addressId']);
         $address->lockstate = 1;
         $address->modUser = $this->user;
+        if ($this->user != $address->user_id) {
+            throw new Exception("Adresse kann darf gelöscht werden!");
+        }
+
         return $address->update();
     }
 }

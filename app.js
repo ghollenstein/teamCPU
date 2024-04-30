@@ -64,9 +64,8 @@ async function addressDelete(addressId) {
             console.log("addressDelete", data);
             window.location.reload(true);
         },
-        (e) => {
-            console.error('Fehler beim Löschen der Adresse:', error);
-            alert('Fehler beim Löschen der Adresse');
+        (error) => {
+            alert(error.message);
         }
     );
 }
