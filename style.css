@@ -172,6 +172,10 @@ header {
     position: relative;
 }
 
+#warenkorb p, #checkout_warenkorb p{
+    padding:10px 20px;
+}
+
 /* NAV */
 header .nav_inner {
     position: absolute;
