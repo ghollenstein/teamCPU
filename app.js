@@ -138,16 +138,27 @@ function removeFromCart(id) {
 
 // Warenkorb anzeigen
 function displayCart() {
+
     const cart = getCart();
+
+    // Element für die Darstellung der Einkaufsdaten in einem Formularfeld abrufen
     const cartData = document.getElementById('cartData');
     if (cartData) {
+        // Einkaufswagenobjekt in JSON-String umwandeln und dem Eingabewert zuweisen
         cartData.value = JSON.stringify(cart);
     }
 
+    // Hauptelement für die Anzeige des Einkaufswagens abrufen
     const cartElement = document.getElementById('warenkorb');
-    const cartElementChekcout = document.getElementById('checkout_warenkorb');
-    cartElement.innerHTML = Object.keys(cart).length ? createCartTable(cart) : '<p>Dein Warenkorb ist leer.</p>';
-    cartElementChekcout.innerHTML = Object.keys(cart).length ? createCartTable(cart, true) : '<p>Dein Warenkorb ist leer.</p>';
+    if (cartElement) {
+        cartElement.innerHTML = Object.keys(cart).length ? createCartTable(cart) : '<p>Dein Warenkorb ist leer.</p>';
+    }
+
+    // Element für die Anzeige des Einkaufswagens beim Checkout abrufen
+    const cartElementCheckout = document.getElementById('checkout_warenkorb');
+    if (cartElementCheckout) {
+        cartElementCheckout.innerHTML = Object.keys(cart).length ? createCartTable(cart, true) : '<p>Dein Warenkorb ist leer.</p>';
+    }
 }
 
 // Hilfsfunktion zur Erstellung der Warenkorbtabelle

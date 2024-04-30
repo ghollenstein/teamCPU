@@ -172,8 +172,9 @@ header {
     position: relative;
 }
 
-#warenkorb p, #checkout_warenkorb p{
-    padding:10px 20px;
+#warenkorb p,
+#checkout_warenkorb p {
+    padding: 10px 20px;
 }
 
 /* NAV */
@@ -650,12 +651,20 @@ form.konto_form {
 .mein_konto_wrapper nav a {
     color: #fff;
     margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.mein_konto_wrapper nav a:hover {
+    color: #333;
+    background: #bec3b4;
 }
 
 .mein_konto_wrapper nav a.btn_active {
-    text-decoration: underline;
     color: #202021;
     font-weight: bold;
+    background: #DDD8BB;
+
 }
 
 .adresse_list {
@@ -938,8 +947,9 @@ input:invalid {
 }
 
 #orders_content tr.summe {
-    color: #4c4e48;
+    color: #222;
     font-weight: bold;
     vertical-align: top;
     background: #bec3b4;
+    background:#DDD8BB
 }
