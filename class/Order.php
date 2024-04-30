@@ -8,6 +8,7 @@ class Order
     protected $productModel;
     protected $orderModel;
     protected $orderItemModel;
+    protected $userId;
 
     public function __construct($conn)
     {
@@ -17,6 +18,7 @@ class Order
         $this->orderModel = new Orders($this->conn);
         $this->orderItemModel = new Order_items($this->conn);
         $this->productModel = new Products($this->conn);
+        $this->userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
     }
 
 
@@ -27,7 +29,6 @@ class Order
         $cartData = json_decode(html_entity_decode($cartDataJson), true);
         $deliveryAddressId = $params['POST']['delivery'] ?? null;
         $billingAddressId = $params['POST']['billing'] ?? null;
-        $userId = $params['user_id'] ?? 1; // Ensure you have user authentication to get this securely
 
         // Start the transaction
         $this->conn->begin_transaction();
@@ -35,7 +36,7 @@ class Order
 
             $this->orderModel->address_id_delivery = $deliveryAddressId;
             $this->orderModel->address_id_billing = $billingAddressId;
-            $this->orderModel->user_id = $userId;
+            $this->orderModel->user_id = $this->userId;
             $this->orderModel->order_date = date('Y-m-d H:i:s');  // Current date and time
             $this->orderModel->total_price = 0;  // This will be calculated based on cart items
             $this->orderModel->status = 1;  // Example status
