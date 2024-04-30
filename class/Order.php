@@ -18,7 +18,7 @@ class Order
         $this->orderModel = new Orders($this->conn);
         $this->orderItemModel = new Order_items($this->conn);
         $this->productModel = new Products($this->conn);
-        $this->userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+        $this->userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
     }
 
 
