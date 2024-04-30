@@ -119,7 +119,7 @@ class Account
     {
         $db = new Sql($this->conn);
 
-        $sql = "select o.createdDate, o.order_id , o.total_price , o.status,p.name , oi.price as netto, (oi.tax/100+1)*oi.price as brutto, oi.quantity  from orders o
+        $sql = "select DATE_FORMAT(o.createdDate, '%d.%m.%Y - %H:%i') AS createdDate, o.order_id , o.total_price , o.status,p.name , oi.price as netto, (oi.tax/100+1)*oi.price as brutto, oi.quantity  from orders o
         inner join order_items oi on oi.order_id =o.order_id 
         left join products p on p.product_id =oi.product_id  
         where o.user_id =? and o.lockstate =0

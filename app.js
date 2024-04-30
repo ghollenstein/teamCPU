@@ -159,6 +159,12 @@ function displayCart() {
     if (cartElementCheckout) {
         cartElementCheckout.innerHTML = Object.keys(cart).length ? createCartTable(cart, true) : '<p>Dein Warenkorb ist leer.</p>';
     }
+
+    // Button für den Übergang zur Kasse abrufen und verbergen, wenn der Warenkorb leer ist
+    const checkoutButton = document.getElementById('zurKassa');
+    if (checkoutButton) {
+        checkoutButton.style.display = Object.keys(cart).length ? 'block' : 'none';
+    }
 }
 
 // Hilfsfunktion zur Erstellung der Warenkorbtabelle
